@@ -3,111 +3,318 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Me</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <title>TikTok User Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    html, body {
+    :root {
+      --bg-dark: #0e1016;
+      --bg-light: #f3f3f3;
+      --primary-blue: #4ea3ff;
+      --accent: #111;
+      --card-bg: #1d202f;
+      --text-light: #ffffff;
+      --text-dark: #111;
+      --highlight: #59f0f4;
+    }
+
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
-      background: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2JmbTZ4aHFjN2RreXEzNjV0MDd3Y3R1cmY1M2pkYXQ4aXVoazJ3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cOkYq5R2TKK0PfV440/giphy.gif') no-repeat center center fixed;
-      background-size: cover;
-      cursor: crosshair;
+      box-sizing: border-box;
+      font-family: 'Rubik', sans-serif;
     }
 
-    .overlay {
-      background: rgba(0, 0, 0, 0.75);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    body {
+      background: var(--bg-dark);
+      color: var(--text-light);
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 2rem;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .card {
-      background: #1e1e2f;
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 0 25px #7d2ae8;
-      max-width: 600px;
+    .light-mode {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .container {
+      max-width: 720px;
       width: 100%;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
     }
 
-    .card h1 {
-      color: #cba4ff;
+    .light-mode .container {
+      background: #fff;
     }
 
-    .location {
-      margin-top: 10px;
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
     }
 
-    .socials {
-      margin-top: 20px;
+    h1 span {
+      color: var(--primary-blue);
     }
 
-    .socials a {
-      margin: 0 10px;
-      font-size: 1.5em;
-      color: #b180ff;
-      transition: 0.3s;
+    .description {
+      text-align: center;
+      font-size: 1rem;
+      color: #aaa;
+      margin-bottom: 2rem;
     }
 
-    .socials a:hover {
-      color: #ffffff;
+    .search-box {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
     }
 
-    iframe {
+    .search-box input {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 10px;
+      border: none;
+      background: #2c2f42;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .search-box button {
+      padding: 0.8rem 1.2rem;
+      border: none;
+      background: var(--highlight);
+      color: #000;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .user-card {
       display: none;
+      background: #23283e;
+      padding: 2rem;
+      border-radius: 16px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .user-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 1rem auto;
+    }
+
+    .user-card h2 {
+      text-align: center;
+      margin-bottom: 0.3rem;
+    }
+
+    .user-card .username {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #8ac6ff;
+      margin-bottom: 1rem;
+    }
+
+    .user-card .bio {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .stat {
+      background: #1c1f33;
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat h4 {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .stat p {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .extra-info {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .download-btn {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      background: var(--highlight);
+      color: black;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .footer a {
+      color: var(--primary-blue);
+      text-decoration: none;
+    }
+
+    .mode-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="overlay">
-    <div class="card">
-      <h1>Hi, I'm YourName</h1>
-      <p>Welcome to my world! I create, explore, and build cool things online. Passionate about design, development, and digital expression.</p>
+  <button class="mode-toggle" onclick="toggleMode()">Toggle Mode</button>
+  <div class="container">
+    <h1><span>TikTok</span> User Lookup</h1>
+    <p class="description">Find public info about any TikTok user. It's fast, smooth and fun!</p>
+    <div class="search-box">
+      <input id="username" type="text" placeholder="Enter TikTok username...">
+      <button onclick="fetchData()">Fetch</button>
+      <button onclick="pasteClipboard()">📋</button>
+    </div>
 
-      <div class="location">
-        <p>🇺🇸 Based in New York, USA</p>
+    <div id="userCard" class="user-card">
+      <img id="avatar" src="" alt="Avatar">
+      <h2 id="nickname">Nickname</h2>
+      <div class="username">@<span id="usernameDisplay">username</span></div>
+      <div class="bio" id="bio">Bio</div>
+
+      <div class="stats">
+        <div class="stat"><h4>Followers</h4><p id="followers">0</p></div>
+        <div class="stat"><h4>Following</h4><p id="following">0</p></div>
+        <div class="stat"><h4>Likes</h4><p id="likes">0</p></div>
+        <div class="stat"><h4>User ID</h4><p id="user_id">---</p></div>
       </div>
 
-      <div class="socials">
-        <a href="#"><i class="fab fa-discord"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-github"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fas fa-envelope"></i></a>
+      <div class="extra-info">
+        <p><strong>Region:</strong> <span id="region">---</span></p>
+        <p><strong>Created:</strong> <span id="created">---</span></p>
+        <p><strong>Nickname Edited:</strong> <span id="nickname_edited">---</span></p>
+        <p><strong>Has Passkey:</strong> <span id="passkey">---</span></p>
       </div>
 
-      <p id="status">Checking Discord status...</p>
+      <a class="download-btn" id="downloadBtn" href="#" download>Download Avatar</a>
+    </div>
+
+     <div class="footer">
+      <p>Made by <a href="https://tiktok.com/@al3ibaa" target="_blank">@al3ibaa</a></p>
+      <p>Help? <a href="mailto:aleiba@aleiba.lol">aleiba@aleiba.lol</a></p>
+      <p>Discord: <span>@al3iba</span></p>
     </div>
   </div>
 
-  <audio autoplay loop>
-    <source src="https://files.catbox.moe/o7a0gr.mp3" type="audio/mpeg">
-  </audio>
-
   <script>
-    async function getDiscordStatus() {
-      const res = await fetch('https://api.lanyard.rest/v1/users/1371912335635124317');
-      const data = await res.json();
-      const online = data.data.discord_status;
-      const lastSeen = new Date(data.data.last_online).toLocaleString();
+    const input = document.getElementById("username");
+    input.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        fetchData();
+      }
+    });
 
-      const statusEl = document.getElementById('status');
-      statusEl.innerHTML = `⚡ Status: <strong>${online.toUpperCase()}</strong><br>🕒 Last Online: ${lastSeen}`;
+    async function pasteClipboard() {
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("username").value = text;
+        fetchData();
+      } catch (err) {
+        alert("Failed to paste: " + err);
+      }
     }
 
-    getDiscordStatus();
+    function countryNameFromCode(code) {
+      const regions = {
+        GB: "🇬🇧 United Kingdom",
+        US: "🇺🇸 United States",
+        FR: "🇫🇷 France",
+        DE: "🇩🇪 Germany",
+        IT: "🇮🇹 Italy",
+        ES: "🇪🇸 Spain",
+        NL: "🇳🇱 Netherlands",
+        RU: "🇷🇺 Russia",
+        IN: "🇮🇳 India",
+        JP: "🇯🇵 Japan",
+        CN: "🇨🇳 China",
+        KR: "🇰🇷 South Korea",
+        SA: "🇸🇦 Saudi Arabia",
+        TR: "🇹🇷 Turkey",
+        AE: "🇦🇪 UAE",
+        IQ: "🇮🇶 Iraq",
+        LY: "🇱🇾 Libya",
+        EG: "🇪🇬 Egypt"
+      };
+      return regions[code] || code;
+    }
+
+    async function fetchData() {
+      const username = input.value.trim();
+      if (!username) return alert('Please enter a username.');
+
+      const res = await fetch(`/lookup?username=${username}`);
+      const data = await res.json();
+
+      if (data.error) return alert(data.error);
+
+      document.getElementById("userCard").style.display = "block";
+      document.getElementById("nickname").textContent = data.nickname;
+      document.getElementById("usernameDisplay").textContent = data.username;
+      document.getElementById("avatar").src = data.profile_pic;
+      document.getElementById("downloadBtn").href = data.profile_pic;
+      document.getElementById("bio").textContent = data.bio;
+      document.getElementById("followers").textContent = data.followers.toLocaleString();
+      document.getElementById("following").textContent = data.following.toLocaleString();
+      document.getElementById("likes").textContent = data.likes.toLocaleString();
+      document.getElementById("user_id").textContent = data.user_id;
+      document.getElementById("region").textContent = countryNameFromCode(data.region || '');
+      document.getElementById("created").textContent = data.created || 'Unknown';
+      document.getElementById("nickname_edited").textContent = data.nickname_edited || 'Unknown';
+      document.getElementById("passkey").textContent = data.has_passkey ? 'Yes' : 'No';
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("light-mode");
+    }
   </script>
 </body>
 </html>
