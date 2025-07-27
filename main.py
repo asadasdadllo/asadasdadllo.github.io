@@ -18,13 +18,12 @@ def extract_region_via_script(username):
             "sec-ch-ua-mobile": "?1",
             "sec-ch-ua-platform": "\"Android\"",
             "upgrade-insecure-requests": "1",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+            "user-agent": "Mozilla/5.0 (Linux; Android 8.0.0; Plume L2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.88 Mobile Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
             "accept-language": "en-US,en;q=0.9"
         }
         response = get(f'https://www.tiktok.com/@{username}', headers=headers)
         if response.status_code != 200:
-            print(f"extract_region_via_script: Failed to get page, status {response.status_code}")
             return "N/A"
         soup = BeautifulSoup(response.text, 'html.parser')
         user_data_script = None
@@ -33,38 +32,20 @@ def extract_region_via_script(username):
                 user_data_script = script.string
                 break
         if not user_data_script:
-            print("extract_region_via_script: Could not find userInfo script")
             return "N/A"
         data = json.loads(user_data_script)
         user = data.get('__DEFAULT_SCOPE__', {}).get('webapp.user-detail', {}).get('userInfo', {}).get('user', {})
         return user.get('region', 'N/A')
-    except Exception as e:
-        print(f"extract_region_via_script error: {e}")
+    except:
         return "N/A"
 
 def get_user_info(username):
     try:
-        url = f'https://www.tiktok.com/@{username}'
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
-            'Accept-Language': 'en-US,en;q=0.9',
-            'Referer': 'https://www.tiktok.com/',
-        }
-        response = get(url, headers=headers)
-        print(f"get_user_info: Status code for {username}: {response.status_code}")
-        if response.status_code != 200:
-            print("get_user_info: Failed to get page")
-            return None
-
-        html = response.text
-        print("get_user_info: Page content snippet:", html[:500])  # Print first 500 chars
-
+        url = f'https://tiktok.com/@{username}'
+        headers = {'user-agent': 'Mozilla/5.0'}
+        html = get(url, headers=headers).text
         soup = BeautifulSoup(html, "html.parser")
         script = soup.find("script", {"id": "__UNIVERSAL_DATA_FOR_REHYDRATION__"})
-        if not script:
-            print("get_user_info: Could not find the required script tag")
-            return None
-
         data = json.loads(script.string)
 
         user = data["__DEFAULT_SCOPE__"]["webapp.user-detail"]["userInfo"]["user"]
@@ -85,7 +66,7 @@ def get_user_info(username):
             "region": extract_region_via_script(username)
         }
     except Exception as e:
-        print(f"get_user_info error: {e}")
+        print(e)
         return None
 
 def check_passkey(username):
@@ -101,8 +82,7 @@ def check_passkey(username):
         check_url = f'https://api16-normal-c-useast1a.tiktokv.com/passport/auth/available_ways/?request_tag_from=h5&not_login_ticket={token}&iid={iid}&device_id={did}&ac=wifi&channel=googleplay&aid=567753'
         result = get(check_url).json()
         return result['data']['has_passkey']
-    except Exception as e:
-        print(f"check_passkey error: {e}")
+    except:
         return False
 
 @app.route('/lookup')
