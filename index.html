@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      background: url('https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2JmbTZ4aHFjN2RreXEzNjV0MDd3Y3R1cmY1M2pkYXQ4aXVoazJ3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cOkYq5R2TKK0PfV440/giphy.gif') no-repeat center center fixed;
+      background-size: cover;
+      cursor: crosshair;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.75);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e1e2f;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 0 25px #7d2ae8;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .card h1 {
+      color: #cba4ff;
+    }
+
+    .location {
+      margin-top: 10px;
+    }
+
+    .socials {
+      margin-top: 20px;
+    }
+
+    .socials a {
+      margin: 0 10px;
+      font-size: 1.5em;
+      color: #b180ff;
+      transition: 0.3s;
+    }
+
+    .socials a:hover {
+      color: #ffffff;
+    }
+
+    iframe {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="card">
+      <h1>Hi, I'm YourName</h1>
+      <p>Welcome to my world! I create, explore, and build cool things online. Passionate about design, development, and digital expression.</p>
+
+      <div class="location">
+        <p>🇺🇸 Based in New York, USA</p>
+      </div>
+
+      <div class="socials">
+        <a href="#"><i class="fab fa-discord"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fas fa-envelope"></i></a>
+      </div>
+
+      <p id="status">Checking Discord status...</p>
+    </div>
+  </div>
+
+  <audio autoplay loop>
+    <source src="https://files.catbox.moe/o7a0gr.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    async function getDiscordStatus() {
+      const res = await fetch('https://api.lanyard.rest/v1/users/1371912335635124317');
+      const data = await res.json();
+      const online = data.data.discord_status;
+      const lastSeen = new Date(data.data.last_online).toLocaleString();
+
+      const statusEl = document.getElementById('status');
+      statusEl.innerHTML = `⚡ Status: <strong>${online.toUpperCase()}</strong><br>🕒 Last Online: ${lastSeen}`;
+    }
+
+    getDiscordStatus();
+  </script>
+</body>
+</html>
