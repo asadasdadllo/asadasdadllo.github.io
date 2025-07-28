@@ -2,135 +2,177 @@
 <html lang="en">
 <head>
   <link rel="icon" href="favicon.png" type="image/png">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Meta tags for Discord/Twitter preview -->
   <title>Tiktok User Lookup</title>
-  <meta name="title" content="Tiktok User Lookup">
-  <meta name="description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
+  <meta name="title" content="Tiktok User Lookup" />
+  <meta name="description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly." />
 
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://aleiba.lol/">
-  <meta property="og:title" content="Tiktok User Lookup">
-  <meta property="og:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
-  <meta property="og:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aleiba.lol/" />
+  <meta property="og:title" content="Tiktok User Lookup" />
+  <meta property="og:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly." />
+  <meta property="og:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png" />
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tiktok User Lookup">
-  <meta name="twitter:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
-  <meta name="twitter:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png">
-
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tiktok User Lookup" />
+  <meta name="twitter:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly." />
+  <meta name="twitter:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png" />
 
   <style>
-    :root {
-      --primary: #f05191;
-      --accent: #51d0f0;
-    }
-
     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #121212;
+      color: #eee;
       margin: 0;
-      font-family: 'Rubik', sans-serif;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
+      padding: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
       min-height: 100vh;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
     }
-
-    .container {
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 40px;
-      width: 90%;
-      max-width: 600px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      animation: fadeIn 0.7s ease;
+    header {
+      margin: 1.5rem 0 0.5rem;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #51d0f0;
+      user-select: none;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    h1 {
-      font-size: 2.4em;
-      margin-bottom: 25px;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    input[type="text"] {
+    #search-area {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
       width: 100%;
-      padding: 14px;
-      font-size: 1em;
-      border-radius: 12px;
+      max-width: 420px;
+    }
+    input#username {
+      flex-grow: 1;
+      font-size: 1rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
       border: none;
       outline: none;
-      margin-bottom: 15px;
+      background: #222;
+      color: #eee;
+      box-shadow: inset 0 0 8px #000;
+      transition: box-shadow 0.3s ease;
     }
-
-    .button-row {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 25px;
+    input#username:focus {
+      box-shadow: inset 0 0 8px #51d0f0;
     }
-
-    button {
-      flex: 1;
-      padding: 12px;
-      font-weight: bold;
-      background: white;
-      color: var(--primary);
+    button#search-btn {
+      background: #51d0f0;
       border: none;
-      border-radius: 12px;
+      color: #121212;
+      padding: 0 16px;
+      border-radius: 8px;
+      font-weight: 700;
       cursor: pointer;
-      transition: 0.3s ease;
+      transition: background 0.3s ease;
+    }
+    button#search-btn:hover {
+      background: #36a9d9;
     }
 
-    button:hover {
-      background: #eee;
+    #result {
+      background: #1e1e1e;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #51d0f0aa;
+      padding: 1rem 1.5rem;
+      width: 100%;
+      max-width: 700px;
+      display: none;
+      color: #eee;
     }
 
-    .result {
-      background: rgba(255, 255, 255, 0.07);
-      padding: 20px;
-      border-radius: 15px;
-      text-align: left;
-      font-size: 1em;
+    /* Profile + info container */
+    #result > div {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    #profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 12px rgba(81, 208, 240, 0.7);
+      user-select: none;
+    }
+    #download-btn {
+      margin-top: 10px;
+      padding: 6px 14px;
+      border: none;
+      background: #51d0f0;
+      color: #121212;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    #download-btn:hover {
+      background: #36a9d9;
+    }
+    #user-info {
+      flex: 1;
       white-space: pre-wrap;
+      font-size: 1rem;
+      line-height: 1.4;
     }
-
-    .result strong {
-      color: #fff;
+    /* Footer with your contact info */
+    footer {
+      margin: 2rem 0 1rem;
+      font-size: 0.85rem;
+      color: #666;
+      text-align: center;
+      user-select: none;
     }
-
-    .credit {
-      margin-top: 30px;
-      font-size: 0.85em;
-      color: rgba(255, 255, 255, 0.5);
+    footer a {
+      color: #51d0f0;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+    footer a:hover {
+      color: #36a9d9;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>TikTok User Lookup</h1>
-    <input type="text" id="username" placeholder="Paste or enter TikTok username...">
-    <div class="button-row">
-      <button onclick="pasteUsername()">📋 Paste</button>
-      <button onclick="searchUser()">🔍 Search</button>
-    </div>
-    <div id="result" class="result" style="display:none;"></div>
-    <div class="credit">Made with ❤️ by Aleiba</div>
+
+  <header>Tiktok User Lookup</header>
+
+  <div id="search-area">
+    <input type="text" id="username" placeholder="Enter TikTok username (e.g. aleiba)" autocomplete="off" />
+    <button id="search-btn" onclick="searchUser()">Search</button>
   </div>
 
+  <div id="result">
+    <div>
+      <div style="text-align:center;">
+        <img id="profile-pic" src="" alt="Profile Picture" />
+        <br />
+        <button id="download-btn" style="display:none;">⬇️ Download Image</button>
+      </div>
+      <div id="user-info"></div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://tiktok.com/@aleiba" target="_blank" rel="noopener noreferrer">TikTok @aleiba</a> | 
+    <a href="https://discord.com/users/al3iba" target="_blank" rel="noopener noreferrer">Discord al3iba</a> | 
+    <a href="mailto:aleiba@aleiba.lol">aleiba@aleiba.lol</a>
+  </footer>
+
   <script>
-    function countryNameFromCode(code) {
-      const regions = {
+    // Simple mapping from TikTok region codes to country names (expand if needed)
+    const countryMap ={
   AD: "🇦🇩 Andorra",
   AE: "🇦🇪 United Arab Emirates",
   AF: "🇦🇫 Afghanistan",
@@ -379,51 +421,78 @@
   ZA: "🇿🇦 South Africa",
   ZM: "🇿🇲 Zambia",
   ZW: "🇿🇼 Zimbabwe"
-}
-      return regions[code] || code;
-    }
+};
 
-    async function pasteUsername() {
-      try {
-        const text = await navigator.clipboard.readText();
-        document.getElementById("username").value = text;
-      } catch (err) {
-        alert("Clipboard access denied.");
-      }
+    function countryNameFromCode(code) {
+      if (!code) return "Not Available";
+      return countryMap[code.toUpperCase()] || code;
     }
 
     async function searchUser() {
       const username = document.getElementById("username").value.trim();
+      const resultDiv = document.getElementById("result");
+      const profilePic = document.getElementById("profile-pic");
+      const userInfo = document.getElementById("user-info");
+      const downloadBtn = document.getElementById("download-btn");
+
       if (!username) return;
 
-      const resultDiv = document.getElementById("result");
       resultDiv.style.display = "block";
-      resultDiv.innerHTML = `⏳ Fetching info for <strong>${username}</strong>...`;
+      profilePic.src = "";
+      userInfo.textContent = `⏳ Fetching info for @${username}...`;
+      downloadBtn.style.display = "none";
 
       try {
         const res = await fetch(`/lookup?username=${encodeURIComponent(username)}`);
         const data = await res.json();
 
         if (data.error) {
-          resultDiv.innerHTML = `<strong>Error:</strong> ${data.error}`;
+          userInfo.innerHTML = `<strong>Error:</strong> ${data.error}`;
+          profilePic.src = "";
+          downloadBtn.style.display = "none";
           return;
         }
 
-        resultDiv.innerHTML = `
-<strong>Name:</strong> ${data.name}
+        profilePic.src = data.profile_pic || "";
+        userInfo.innerHTML = `
+<strong>Username:</strong> @${data.username}
 <strong>Nickname:</strong> ${data.nickname}
-<strong>Followers:</strong> ${data.followers.toLocaleString()}
-<strong>Following:</strong> ${data.following.toLocaleString()}
-<strong>Likes:</strong> ${data.likes.toLocaleString()}
-<strong>Country:</strong> ${countryNameFromCode(data.country)}
-<strong>Created On:</strong> ${data.creation_date}
-<strong>Nickname Changed:</strong> ${data.nickname_changed ? "✅ Yes" : "❌ No"}
-<strong>Passkey Enabled:</strong> ${data.passkey ? "🔐 Yes" : "🔓 No"}
+<strong>Followers:</strong> ${Number(data.followers).toLocaleString()}
+<strong>Following:</strong> ${Number(data.following).toLocaleString()}
+<strong>Likes:</strong> ${Number(data.likes).toLocaleString()}
+<strong>Country:</strong> ${countryNameFromCode(data.region)}
+<strong>Created On:</strong> ${data.created || "N/A"}
+<strong>Nickname Changed:</strong> ${data.nickname_edited ? "✅ Yes" : "❌ No"}
+<strong>Username Changed:</strong> ${data.username_changed ? "✅ Yes" : "❌ No"}
+<strong>Passkey Enabled:</strong> ${data.has_passkey ? "🔐 Yes" : "🔓 No"}
         `;
+
+        if (data.profile_pic) {
+          downloadBtn.style.display = "inline-block";
+          downloadBtn.onclick = () => {
+            const a = document.createElement("a");
+            a.href = data.profile_pic;
+            a.download = `${data.username}_profile_pic.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          };
+        } else {
+          downloadBtn.style.display = "none";
+        }
       } catch (e) {
-        resultDiv.innerHTML = `<strong>Error:</strong> ${e.message}`;
+        userInfo.innerHTML = `<strong>Error:</strong> ${e.message}`;
+        profilePic.src = "";
+        downloadBtn.style.display = "none";
       }
     }
+
+    // Optional: submit on enter key
+    document.getElementById("username").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        searchUser();
+      }
+    });
   </script>
 </body>
 </html>
