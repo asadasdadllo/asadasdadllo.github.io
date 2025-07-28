@@ -1,368 +1,568 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="favicon.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Tiktok User Lookup</title>
-
-  <link rel="icon" href="favicon.png" type="image/png" />
   <!-- Meta tags for Discord/Twitter preview -->
-  <meta name="title" content="Tiktok User Lookup" />
-  <meta name="description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://aleiba.lol/" />
-  <meta property="og:title" content="Tiktok User Lookup" />
-  <meta property="og:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly." />
-  <meta property="og:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tiktok User Lookup" />
-  <meta name="twitter:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly." />
-  <meta name="twitter:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png" />
+  <title>Tiktok User Lookup</title>
+  <meta name="title" content="Tiktok User Lookup">
+  <meta name="description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
 
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aleiba.lol/">
+  <meta property="og:title" content="Tiktok User Lookup">
+  <meta property="og:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
+  <meta property="og:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tiktok User Lookup">
+  <meta name="twitter:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
+  <meta name="twitter:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png">
+
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    /* Reset and base */
-    *, *::before, *::after {
-      box-sizing: border-box;
+    :root {
+      --bg-dark: #0e1016;
+      --bg-light: #f3f3f3;
+      --primary-blue: #4ea3ff;
+      --accent: #111;
+      --card-bg: #1d202f;
+      --text-light: #ffffff;
+      --text-dark: #111;
+      --highlight: #59f0f4;
     }
-    body {
+
+    * {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rubik', sans-serif;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-light);
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
       align-items: center;
-      padding: 2rem 1rem 4rem;
-      transition: background-color 0.5s ease, color 0.5s ease;
-      --primary: #51d0f0;
-      --primary-dark: #36a9d9;
-      --bg: #121212;
-      --text: #eee;
-      --card-bg: #1e1e1e;
-      --shadow: rgba(81, 208, 240, 0.5);
-      --button-bg: var(--primary);
-      --button-hover: var(--primary-dark);
-      --input-bg: #222;
-      --input-focus-shadow: #51d0f0;
-    }
-    body.light {
-      --bg: #f4f9ff;
-      --text: #222;
-      --card-bg: #fff;
-      --shadow: rgba(81, 208, 240, 0.3);
-      --button-bg: #51a7d0;
-      --button-hover: #3681b9;
-      --input-bg: #eee;
-      --input-focus-shadow: #51a7d0;
+      padding: 2rem;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* Header */
-    header {
-      font-size: 2.5rem;
-      font-weight: 900;
-      margin-bottom: 2rem;
-      color: var(--primary);
-      user-select: none;
-      text-shadow: 0 0 6px var(--primary);
+    .light-mode {
+      background: var(--bg-light);
+      color: var(--text-dark);
     }
 
-    /* Controls container */
-    #controls {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 3rem;
-      max-width: 460px;
+    .container {
+      max-width: 720px;
       width: 100%;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Input */
-    #username {
-      flex-grow: 1;
-      font-size: 1.15rem;
-      padding: 0.65rem 1rem;
-      border-radius: 12px;
-      border: none;
-      background: var(--input-bg);
-      color: var(--text);
-      box-shadow: inset 0 0 10px #00000090;
-      outline-offset: 2px;
-      transition: box-shadow 0.3s ease;
-    }
-    #username:focus {
-      box-shadow: inset 0 0 10px var(--input-focus-shadow);
-    }
-
-    /* Buttons */
-    button {
-      background: var(--button-bg);
-      color: var(--text);
-      border: none;
-      padding: 0.55rem 1.1rem;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.05rem;
-      cursor: pointer;
-      box-shadow: 0 4px 10px var(--shadow);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-    button:hover {
-      background: var(--button-hover);
-      box-shadow: 0 6px 14px var(--shadow);
-    }
-
-    /* Theme toggle styling */
-    #theme-toggle {
-      font-size: 1.4rem;
-      background: transparent;
-      color: var(--primary);
-      box-shadow: none;
-      padding: 0.2rem 0.5rem;
-      border-radius: 8px;
-      user-select: none;
-      transition: color 0.3s ease;
-    }
-    #theme-toggle:hover {
-      color: var(--button-hover);
-    }
-
-    /* Result container */
-    #result {
-      display: flex;
-      max-width: 900px;
-      width: 90vw;
       background: var(--card-bg);
-      border-radius: 18px;
-      box-shadow: 0 0 20px var(--shadow);
-      padding: 2rem 2.5rem;
-      gap: 2.5rem;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    #result.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    /* Profile picture section */
-    #profile-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 140px;
-    }
-    #profile-pic {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 0 16px var(--primary);
-      user-select: none;
-      transition: transform 0.3s ease;
-    }
-    #profile-pic:hover {
-      transform: scale(1.05);
-    }
-
-    /* Download button below profile pic */
-    #download-btn {
-      margin-top: 1rem;
-      padding: 0.5rem 1.2rem;
-      font-size: 1rem;
-      border-radius: 14px;
-      box-shadow: 0 3px 8px var(--shadow);
-      background: var(--button-bg);
-      color: var(--text);
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      border: none;
-    }
-    #download-btn:hover {
-      background: var(--button-hover);
-    }
-
-    /* User info boxes container */
-    #user-info {
-      flex-grow: 1;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1.6rem 2rem;
-    }
-
-    /* Individual info box */
-    .info-box {
-      background: var(--bg);
-      color: var(--text);
+      padding: 2rem;
       border-radius: 16px;
-      padding: 1.25rem 1.6rem;
-      box-shadow: 0 0 10px var(--shadow);
-      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .light-mode .container {
+      background: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+
+    h1 span {
+      color: var(--primary-blue);
+    }
+
+    .description {
+      text-align: center;
+      font-size: 1rem;
+      color: #aaa;
+      margin-bottom: 2rem;
+    }
+
+    .search-box {
       display: flex;
-      flex-direction: column;
-      user-select: none;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 10px;
+      border: none;
+      background: #2c2f42;
+      color: white;
+      font-size: 1rem;
+    }
+
+    .search-box button {
+      padding: 0.8rem 1.2rem;
+      border: none;
+      background: var(--highlight);
+      color: #000;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .user-card {
+      display: none;
+      background: #23283e;
+      padding: 2rem;
+      border-radius: 16px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .user-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 1rem auto;
+    }
+
+    .user-card h2 {
+      text-align: center;
+      margin-bottom: 0.3rem;
+    }
+
+    .user-card .username {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #8ac6ff;
+      margin-bottom: 1rem;
+    }
+
+    .user-card .bio {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .stat {
+      background: #1c1f33;
+      padding: 1rem;
+      border-radius: 10px;
       text-align: center;
     }
-    .info-box > span.label {
+
+    .stat h4 {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .stat p {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .extra-info {
+      margin-top: 1.5rem;
       font-size: 0.85rem;
-      font-weight: 400;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-      user-select: text;
-    }
-    .info-box > span.value {
-      font-size: 1.25rem;
-      font-weight: 700;
-      word-break: break-word;
-      user-select: text;
+      line-height: 1.5;
     }
 
-    /* Footer */
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: var(--text);
-      opacity: 0.7;
-      user-select: none;
+    .download-btn {
+      display: block;
       text-align: center;
-    }
-    footer a {
-      color: var(--primary);
+      margin-top: 1rem;
+      background: var(--highlight);
+      color: black;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: bold;
       text-decoration: none;
-      margin: 0 0.8rem;
-      transition: color 0.3s ease;
-      user-select: text;
-    }
-    footer a:hover {
-      color: var(--button-hover);
-      text-decoration: underline;
     }
 
-    /* Responsive tweaks */
-    @media (max-width: 600px) {
-      #result {
-        flex-direction: column;
-        align-items: center;
-        padding: 1.8rem 1.6rem;
-      }
-      #user-info {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 1.2rem 1.2rem;
-        width: 100%;
-      }
-      #profile-section {
-        margin-bottom: 1.5rem;
-      }
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .footer a {
+      color: var(--primary-blue);
+      text-decoration: none;
+    }
+
+    .mode-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <button class="mode-toggle" onclick="toggleMode()">Toggle Mode</button>
+  <div class="container">
+    <h1><span>TikTok</span> User Lookup</h1>
+    <p class="description">Find public info about any TikTok user. It's fast, smooth and fun!</p>
+    <div class="search-box">
+      <input id="username" type="text" placeholder="Enter TikTok username...">
+      <button onclick="fetchData()">Fetch</button>
+      <button onclick="pasteClipboard()">📋</button>
+    </div>
 
-  <header>Tiktok User Lookup</header>
+    <div id="userCard" class="user-card">
+      <img id="avatar" src="" alt="Avatar">
+      <h2 id="nickname">Nickname</h2>
+      <div class="username">@<span id="usernameDisplay">username</span></div>
+      <div class="bio" id="bio">Bio</div>
 
-  <div id="controls">
-    <input
-      type="text"
-      id="username"
-      placeholder="Enter TikTok username (e.g. aleiba)"
-      autocomplete="off"
-      spellcheck="false"
-      aria-label="TikTok username input"
-    />
-    <button id="paste-btn" title="Paste from clipboard">📋</button>
-    <button id="search-btn" aria-label="Search TikTok user">Search</button>
-    <button id="theme-toggle" title="Toggle Light/Dark Theme">🌙</button>
+      <div class="stats">
+        <div class="stat"><h4>Followers</h4><p id="followers">0</p></div>
+        <div class="stat"><h4>Following</h4><p id="following">0</p></div>
+        <div class="stat"><h4>Likes</h4><p id="likes">0</p></div>
+        <div class="stat"><h4>User ID</h4><p id="user_id">---</p></div>
+      </div>
+
+      <div class="extra-info">
+        <p><strong>Region:</strong> <span id="region">---</span></p>
+        <p><strong>Created:</strong> <span id="created">---</span></p>
+        <p><strong>Nickname Edited:</strong> <span id="nickname_edited">---</span></p>
+        <p><strong>Has Passkey:</strong> <span id="passkey">---</span></p>
+      </div>
+
+      <a class="download-btn" id="downloadBtn" href="#" download>Download Avatar</a>
+    </div>
+
+    <div class="footer">
+      <p>Made by <a href="https://tiktok.com/@al3ibaa" target="_blank">@al3ibaa</a></p>
+      <p>Help? <a href="mailto:aleiba@aleiba.lol">aleiba@aleiba.lol</a></p>
+      <p>Discord: <span>@al3iba</span></p>
+    </div>
   </div>
 
-  <section id="result" aria-live="polite" aria-atomic="true" role="region">
-    <div id="profile-section">
-      <img id="profile-pic" src="" alt="Profile Picture" />
-      <button id="download-btn" onclick="downloadPic()">Download</button>
-    </div>
-    <div id="user-info">
-      <!-- Populated dynamically -->
-    </div>
-  </section>
-
-  <footer>
-    Built by <a href="https://aleiba.lol/" target="_blank" rel="noopener noreferrer">Aleiba</a> • Powered by <a href="https://tiktok.com/" target="_blank" rel="noopener noreferrer">TikTok</a>
-  </footer>
-
   <script>
-    // Helper for theme toggle
-    const themeBtn = document.getElementById('theme-toggle');
-    themeBtn.onclick = () => {
-      document.body.classList.toggle('light');
-      themeBtn.textContent = document.body.classList.contains('light') ? '🌞' : '🌙';
-    };
+    const input = document.getElementById("username");
+    input.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        fetchData();
+      }
+    });
 
-    // Paste from clipboard
-    document.getElementById('paste-btn').onclick = async () => {
-      const text = await navigator.clipboard.readText();
-      if (text) document.getElementById('username').value = text.trim();
-    };
-
-    // Download profile picture
-    function downloadPic() {
-      const img = document.getElementById('profile-pic');
-      const link = document.createElement('a');
-      link.href = img.src;
-      link.download = "profile.jpg";
-      link.click();
+    async function pasteClipboard() {
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("username").value = text;
+        fetchData();
+      } catch (err) {
+        alert("Failed to paste: " + err);
+      }
     }
 
-    // Fetch and display TikTok user data
-    document.getElementById('search-btn').onclick = async () => {
-      const username = document.getElementById('username').value.trim();
-      if (!username) return;
+    function countryNameFromCode(code) {
+  const regions = {
+    AD: "🇦🇩 Andorra",
+    AE: "🇦🇪 United Arab Emirates",
+    AF: "🇦🇫 Afghanistan",
+    AG: "🇦🇬 Antigua and Barbuda",
+    AI: "🇦🇮 Anguilla",
+    AL: "🇦🇱 Albania",
+    AM: "🇦🇲 Armenia",
+    AO: "🇦🇴 Angola",
+    AQ: "🇦🇶 Antarctica",
+    AR: "🇦🇷 Argentina",
+    AS: "🇦🇸 American Samoa",
+    AT: "🇦🇹 Austria",
+    AU: "🇦🇺 Australia",
+    AW: "🇦🇼 Aruba",
+    AX: "🇦🇽 Åland Islands",
+    AZ: "🇦🇿 Azerbaijan",
+    BA: "🇧🇦 Bosnia and Herzegovina",
+    BB: "🇧🇧 Barbados",
+    BD: "🇧🇩 Bangladesh",
+    BE: "🇧🇪 Belgium",
+    BF: "🇧🇫 Burkina Faso",
+    BG: "🇧🇬 Bulgaria",
+    BH: "🇧🇭 Bahrain",
+    BI: "🇧🇮 Burundi",
+    BJ: "🇧🇯 Benin",
+    BL: "🇧🇱 Saint Barthélemy",
+    BM: "🇧🇲 Bermuda",
+    BN: "🇧🇳 Brunei Darussalam",
+    BO: "🇧🇴 Bolivia, Plurinational State of",
+    BQ: "🇧🇶 Bonaire, Sint Eustatius and Saba",
+    BR: "🇧🇷 Brazil",
+    BS: "🇧🇸 Bahamas",
+    BT: "🇧🇹 Bhutan",
+    BV: "🇧🇻 Bouvet Island",
+    BW: "🇧🇼 Botswana",
+    BY: "🇧🇾 Belarus",
+    BZ: "🇧🇿 Belize",
+    CA: "🇨🇦 Canada",
+    CC: "🇨🇨 Cocos (Keeling) Islands",
+    CD: "🇨🇩 Congo, The Democratic Republic of the",
+    CF: "🇨🇫 Central African Republic",
+    CG: "🇨🇬 Congo",
+    CH: "🇨🇭 Switzerland",
+    CI: "🇨🇮 Côte d'Ivoire",
+    CK: "🇨🇰 Cook Islands",
+    CL: "🇨🇱 Chile",
+    CM: "🇨🇲 Cameroon",
+    CN: "🇨🇳 China",
+    CO: "🇨🇴 Colombia",
+    CR: "🇨🇷 Costa Rica",
+    CU: "🇨🇺 Cuba",
+    CV: "🇨🇻 Cabo Verde",
+    CW: "🇨🇼 Curaçao",
+    CX: "🇨🇽 Christmas Island",
+    CY: "🇨🇾 Cyprus",
+    CZ: "🇨🇿 Czechia",
+    DE: "🇩🇪 Germany",
+    DJ: "🇩🇯 Djibouti",
+    DK: "🇩🇰 Denmark",
+    DM: "🇩🇲 Dominica",
+    DO: "🇩🇴 Dominican Republic",
+    DZ: "🇩🇿 Algeria",
+    EC: "🇪🇨 Ecuador",
+    EE: "🇪🇪 Estonia",
+    EG: "🇪🇬 Egypt",
+    EH: "🇪🇭 Western Sahara",
+    ER: "🇪🇷 Eritrea",
+    ES: "🇪🇸 Spain",
+    ET: "🇪🇹 Ethiopia",
+    FI: "🇫🇮 Finland",
+    FJ: "🇫🇯 Fiji",
+    FK: "🇫🇰 Falkland Islands (Malvinas)",
+    FM: "🇫🇲 Micronesia, Federated States of",
+    FO: "🇫🇴 Faroe Islands",
+    FR: "🇫🇷 France",
+    GA: "🇬🇦 Gabon",
+    GB: "🇬🇧 United Kingdom",
+    GD: "🇬🇩 Grenada",
+    GE: "🇬🇪 Georgia",
+    GF: "🇬🇫 French Guiana",
+    GG: "🇬🇬 Guernsey",
+    GH: "🇬🇭 Ghana",
+    GI: "🇬🇮 Gibraltar",
+    GL: "🇬🇱 Greenland",
+    GM: "🇬🇲 Gambia",
+    GN: "🇬🇳 Guinea",
+    GP: "🇬🇵 Guadeloupe",
+    GQ: "🇬🇶 Equatorial Guinea",
+    GR: "🇬🇷 Greece",
+    GS: "🇬🇸 South Georgia and the South Sandwich Islands",
+    GT: "🇬🇹 Guatemala",
+    GU: "🇬🇺 Guam",
+    GW: "🇬🇼 Guinea-Bissau",
+    GY: "🇬🇾 Guyana",
+    HK: "🇭🇰 Hong Kong",
+    HM: "🇭🇲 Heard Island and McDonald Islands",
+    HN: "🇭🇳 Honduras",
+    HR: "🇭🇷 Croatia",
+    HT: "🇭🇹 Haiti",
+    HU: "🇭🇺 Hungary",
+    ID: "🇮🇩 Indonesia",
+    IE: "🇮🇪 Ireland",
+    IL: "🇮🇱 Israel",
+    IM: "🇮🇲 Isle of Man",
+    IN: "🇮🇳 India",
+    IO: "🇮🇴 British Indian Ocean Territory",
+    IQ: "🇮🇶 Iraq",
+    IR: "🇮🇷 Iran, Islamic Republic of",
+    IS: "🇮🇸 Iceland",
+    IT: "🇮🇹 Italy",
+    JE: "🇯🇪 Jersey",
+    JM: "🇯🇲 Jamaica",
+    JO: "🇯🇴 Jordan",
+    JP: "🇯🇵 Japan",
+    KE: "🇰🇪 Kenya",
+    KG: "🇰🇬 Kyrgyzstan",
+    KH: "🇰🇭 Cambodia",
+    KI: "🇰🇮 Kiribati",
+    KM: "🇰🇲 Comoros",
+    KN: "🇰🇳 Saint Kitts and Nevis",
+    KP: "🇰🇵 Korea, Democratic People's Republic of",
+    KR: "🇰🇷 Korea, Republic of",
+    KW: "🇰🇼 Kuwait",
+    KY: "🇰🇾 Cayman Islands",
+    KZ: "🇰🇿 Kazakhstan",
+    LA: "🇱🇦 Lao People's Democratic Republic",
+    LB: "🇱🇧 Lebanon",
+    LC: "🇱🇨 Saint Lucia",
+    LI: "🇱🇮 Liechtenstein",
+    LK: "🇱🇰 Sri Lanka",
+    LR: "🇱🇷 Liberia",
+    LS: "🇱🇸 Lesotho",
+    LT: "🇱🇹 Lithuania",
+    LU: "🇱🇺 Luxembourg",
+    LV: "🇱🇻 Latvia",
+    LY: "🇱🇾 Libya",
+    MA: "🇲🇦 Morocco",
+    MC: "🇲🇨 Monaco",
+    MD: "🇲🇩 Moldova, Republic of",
+    ME: "🇲🇪 Montenegro",
+    MF: "🇲🇫 Saint Martin (French part)",
+    MG: "🇲🇬 Madagascar",
+    MH: "🇲🇭 Marshall Islands",
+    MK: "🇲🇰 North Macedonia",
+    ML: "🇲🇱 Mali",
+    MM: "🇲🇲 Myanmar",
+    MN: "🇲🇳 Mongolia",
+    MO: "🇲🇴 Macao",
+    MP: "🇲🇵 Northern Mariana Islands",
+    MQ: "🇲🇶 Martinique",
+    MR: "🇲🇷 Mauritania",
+    MS: "🇲🇸 Montserrat",
+    MT: "🇲🇹 Malta",
+    MU: "🇲🇺 Mauritius",
+    MV: "🇲🇻 Maldives",
+    MW: "🇲🇼 Malawi",
+    MX: "🇲🇽 Mexico",
+    MY: "🇲🇾 Malaysia",
+    MZ: "🇲🇿 Mozambique",
+    NA: "🇳🇦 Namibia",
+    NC: "🇳🇨 New Caledonia",
+    NE: "🇳🇪 Niger",
+    NF: "🇳🇫 Norfolk Island",
+    NG: "🇳🇬 Nigeria",
+    NI: "🇳🇮 Nicaragua",
+    NL: "🇳🇱 Netherlands",
+    NO: "🇳🇴 Norway",
+    NP: "🇳🇵 Nepal",
+    NR: "🇳🇷 Nauru",
+    NU: "🇳🇺 Niue",
+    NZ: "🇳🇿 New Zealand",
+    OM: "🇴🇲 Oman",
+    PA: "🇵🇦 Panama",
+    PE: "🇵🇪 Peru",
+    PF: "🇵🇫 French Polynesia",
+    PG: "🇵🇬 Papua New Guinea",
+    PH: "🇵🇭 Philippines",
+    PK: "🇵🇰 Pakistan",
+    PL: "🇵🇱 Poland",
+    PM: "🇵🇲 Saint Pierre and Miquelon",
+    PN: "🇵🇳 Pitcairn",
+    PR: "🇵🇷 Puerto Rico",
+    PS: "🇵🇸 Palestine, State of",
+    PT: "🇵🇹 Portugal",
+    PW: "🇵🇼 Palau",
+    PY: "🇵🇾 Paraguay",
+    QA: "🇶🇦 Qatar",
+    RE: "🇷🇪 Réunion",
+    RO: "🇷🇴 Romania",
+    RS: "🇷🇸 Serbia",
+    RU: "🇷🇺 Russian Federation",
+    RW: "🇷🇼 Rwanda",
+    SA: "🇸🇦 Saudi Arabia",
+    SB: "🇸🇧 Solomon Islands",
+    SC: "🇸🇨 Seychelles",
+    SD: "🇸🇩 Sudan",
+    SE: "🇸🇪 Sweden",
+    SG: "🇸🇬 Singapore",
+    SH: "🇸🇭 Saint Helena, Ascension and Tristan da Cunha",
+    SI: "🇸🇮 Slovenia",
+    SJ: "🇸🇯 Svalbard and Jan Mayen",
+    SK: "🇸🇰 Slovakia",
+    SL: "🇸🇱 Sierra Leone",
+    SM: "🇸🇲 San Marino",
+    SN: "🇸🇳 Senegal",
+    SO: "🇸🇴 Somalia",
+    SR: "🇸🇷 Suriname",
+    SS: "🇸🇸 South Sudan",
+    ST: "🇸🇹 Sao Tome and Principe",
+    SV: "🇸🇻 El Salvador",
+    SX: "🇸🇽 Sint Maarten (Dutch part)",
+    SY: "🇸🇾 Syrian Arab Republic",
+    SZ: "🇸🇿 Eswatini",
+    TC: "🇹🇨 Turks and Caicos Islands",
+    TD: "🇹🇩 Chad",
+    TF: "🇹🇫 French Southern Territories",
+    TG: "🇹🇬 Togo",
+    TH: "🇹🇭 Thailand",
+    TJ: "🇹🇯 Tajikistan",
+    TK: "🇹🇰 Tokelau",
+    TL: "🇹🇱 Timor-Leste",
+    TM: "🇹🇲 Turkmenistan",
+    TN: "🇹🇳 Tunisia",
+    TO: "🇹🇴 Tonga",
+    TR: "🇹🇷 Turkey",
+    TT: "🇹🇹 Trinidad and Tobago",
+    TV: "🇹🇻 Tuvalu",
+    TW: "🇹🇼 Taiwan, Province of China",
+    TZ: "🇹🇿 Tanzania, United Republic of",
+    UA: "🇺🇦 Ukraine",
+    UG: "🇺🇬 Uganda",
+    UM: "🇺🇲 United States Minor Outlying Islands",
+    US: "🇺🇸 United States",
+    UY: "🇺🇾 Uruguay",
+    UZ: "🇺🇿 Uzbekistan",
+    VA: "🇻🇦 Holy See (Vatican City State)",
+    VC: "🇻🇨 Saint Vincent and the Grenadines",
+    VE: "🇻🇪 Venezuela, Bolivarian Republic of",
+    VG: "🇻🇬 Virgin Islands, British",
+    VI: "🇻🇮 Virgin Islands, U.S.",
+    VN: "🇻🇳 Viet Nam",
+    VU: "🇻🇺 Vanuatu",
+    WF: "🇼🇫 Wallis and Futuna",
+    WS: "🇼🇸 Samoa",
+    YE: "🇾🇪 Yemen",
+    YT: "🇾🇹 Mayotte",
+    ZA: "🇿🇦 South Africa",
+    ZM: "🇿🇲 Zambia",
+    ZW: "🇿🇼 Zimbabwe",
+  };
+  return regions[code] || code;
+}
 
-      try {
-        const res = await fetch(`/lookup?username=${encodeURIComponent(username)}`);
-        const data = await res.json();
+    async function fetchData() {
+      const username = input.value.trim();
+      if (!username) return alert('Please enter a username.');
 
-        if (!data || !data.username) return alert("User not found or error.");
+      const res = await fetch(`/lookup?username=${username}`);
+      const data = await res.json();
 
-        const userInfo = document.getElementById('user-info');
-        const result = document.getElementById('result');
-        const pic = document.getElementById('profile-pic');
+      if (data.error) return alert(data.error);
 
-        userInfo.innerHTML = ''; // clear previous
+      document.getElementById("userCard").style.display = "block";
+      document.getElementById("nickname").textContent = data.nickname;
+      document.getElementById("usernameDisplay").textContent = data.username;
+      document.getElementById("avatar").src = data.profile_pic;
+      document.getElementById("downloadBtn").href = data.profile_pic;
+      document.getElementById("bio").textContent = data.bio;
+      document.getElementById("followers").textContent = data.followers.toLocaleString();
+      document.getElementById("following").textContent = data.following.toLocaleString();
+      document.getElementById("likes").textContent = data.likes.toLocaleString();
+      document.getElementById("user_id").textContent = data.user_id;
+      document.getElementById("region").textContent = countryNameFromCode(data.region || '');
+      document.getElementById("created").textContent = data.created || 'Unknown';
+      document.getElementById("nickname_edited").textContent = data.nickname_edited || 'Unknown';
+      document.getElementById("passkey").textContent = data.has_passkey ? 'Yes' : 'No';
+    }
 
-        const fields = {
-          "Username": data.username,
-          "Full Name": data.full_name,
-          "Bio": data.bio || "—",
-          "Followers": data.followers,
-          "Following": data.following,
-          "Likes": data.likes,
-          "Country": data.country || "Unknown",
-          "Nickname Changed": data.nickname_changed || "N/A",
-        };
-
-        for (const [label, value] of Object.entries(fields)) {
-          const box = document.createElement('div');
-          box.className = 'info-box';
-          box.innerHTML = `<span class="label">${label}</span><span class="value">${value}</span>`;
-          userInfo.appendChild(box);
-        }
-
-        pic.src = data.profile_picture || '';
-
-        result.classList.add('visible');
-      } catch (err) {
-        alert("Failed to fetch user info.");
-        console.error(err);
-      }
-    };
+    function toggleMode() {
+      document.body.classList.toggle("light-mode");
+    }
   </script>
-
 </body>
 </html>
