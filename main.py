@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template
+from flask import Flask, request, jsonify, send_from_directory
 from requests import get, post
 from bs4 import BeautifulSoup
 import json
@@ -101,11 +101,6 @@ def lookup():
 @app.route('/')
 def index():
     return send_from_directory('', 'index.html')
-
-# ✅ Custom 404 error page
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
