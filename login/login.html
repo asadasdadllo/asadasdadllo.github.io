@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | aleiba.lol</title>
+  <link rel="icon" href="/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .login-box {
+      background: linear-gradient(145deg, #0a0a0a, #101010);
+      padding: 50px;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(0, 183, 255, 0.3);
+      text-align: center;
+      color: white;
+      animation: popIn 0.5s ease-out;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .logo {
+      width: 180px;
+      margin-bottom: 25px;
+      filter: drop-shadow(0 0 4px rgba(0,183,255,0.5));
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 25px;
+      color: #c4f0ff;
+    }
+
+    input[type="password"] {
+      padding: 14px;
+      width: 100%;
+      border: 1px solid #0af;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      background: #0a0a0a;
+      color: white;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    input[type="password"]:focus {
+      border-color: #00c3ff;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #00bfff;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #00a8e0;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <img src="/favicon.png" alt="Logo" class="logo" />
+    <h2>Enter Password to Continue</h2>
+    <input type="password" id="password" placeholder="Enter password" />
+    <button onclick="submitPassword()">Submit</button>
+  </div>
+
+  <script>
+    const correctPassword = "your-password"; // Change this
+
+    function submitPassword() {
+      const input = document.getElementById("password").value;
+      if (input === correctPassword) {
+        window.location.href = "/";
+      } else {
+        alert("Incorrect password");
+      }
+    }
+
+    document.getElementById("password").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        submitPassword();
+      }
+    });
+  </script>
+</body>
+</html>
