@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Meta tags for Discord/Twitter preview -->
   <title>Tiktok User Lookup</title>
   <meta name="title" content="Tiktok User Lookup">
   <meta name="description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
@@ -21,254 +20,550 @@
   <meta name="twitter:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
   <meta name="twitter:image" content="https://i.postimg.cc/JnMtQ28m/b6c33ce9-726a-48f5-b9fc-2353c4954f16.png">
 
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg-dark: #0e1016;
-      --bg-light: #f3f3f3;
-      --primary-blue: #4ea3ff;
-      --accent: #111;
-      --card-bg: #1d202f;
-      --text-light: #ffffff;
-      --text-dark: #111;
-      --highlight: #59f0f4;
+      --bg: #0b1020;
+      --bg-secondary: #11182d;
+      --panel: rgba(19, 27, 48, 0.75);
+      --panel-solid: #131b30;
+      --card: rgba(255, 255, 255, 0.06);
+      --card-2: rgba(255, 255, 255, 0.04);
+      --text: #f5f7ff;
+      --muted: #a9b4d0;
+      --border: rgba(255, 255, 255, 0.10);
+      --accent: #6ea8ff;
+      --accent-2: #57e6ff;
+      --success: #7df7c5;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --stat-bg: rgba(255, 255, 255, 0.04);
+      --nav-bg: rgba(9, 14, 28, 0.7);
+      --glow: radial-gradient(circle at top left, rgba(87, 230, 255, 0.18), transparent 30%),
+              radial-gradient(circle at top right, rgba(110, 168, 255, 0.15), transparent 35%);
+    }
+
+    body.theme-light {
+      --bg: #eef3ff;
+      --bg-secondary: #dde7ff;
+      --panel: rgba(255, 255, 255, 0.78);
+      --panel-solid: #ffffff;
+      --card: rgba(17, 24, 39, 0.04);
+      --card-2: rgba(17, 24, 39, 0.03);
+      --text: #111827;
+      --muted: #5c667a;
+      --border: rgba(17, 24, 39, 0.08);
+      --accent: #2563eb;
+      --accent-2: #06b6d4;
+      --success: #10b981;
+      --shadow: 0 20px 60px rgba(42, 60, 120, 0.12);
+      --input-bg: rgba(17, 24, 39, 0.04);
+      --stat-bg: rgba(17, 24, 39, 0.035);
+      --nav-bg: rgba(255, 255, 255, 0.8);
+      --glow: radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 30%),
+              radial-gradient(circle at top right, rgba(6, 182, 212, 0.08), transparent 35%);
+    }
+
+    body.theme-neon {
+      --bg: #06060a;
+      --bg-secondary: #0c0c14;
+      --panel: rgba(16, 16, 24, 0.82);
+      --panel-solid: #101018;
+      --card: rgba(255, 255, 255, 0.05);
+      --card-2: rgba(255, 255, 255, 0.03);
+      --text: #f8faff;
+      --muted: #a7abc0;
+      --border: rgba(0, 255, 200, 0.14);
+      --accent: #00f5d4;
+      --accent-2: #ff4fd8;
+      --success: #a3ff6e;
+      --shadow: 0 25px 80px rgba(0, 0, 0, 0.55);
+      --input-bg: rgba(255, 255, 255, 0.04);
+      --stat-bg: rgba(255, 255, 255, 0.03);
+      --nav-bg: rgba(10, 10, 16, 0.82);
+      --glow: radial-gradient(circle at top left, rgba(0, 245, 212, 0.16), transparent 30%),
+              radial-gradient(circle at top right, rgba(255, 79, 216, 0.14), transparent 35%);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Rubik', sans-serif;
+      font-family: 'Inter', sans-serif;
     }
 
     body {
-      background: var(--bg-dark);
-      color: var(--text-light);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-      transition: background 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      background:
+        var(--glow),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-secondary) 100%);
+      color: var(--text);
+      transition: background 0.35s ease, color 0.35s ease;
+      padding: 24px;
     }
 
-    .light-mode {
-      background: var(--bg-light);
-      color: var(--text-dark);
+    .app-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .brand-text h1 {
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .brand-text p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 2px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .theme-menu {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      cursor: pointer;
     }
 
     .container {
-      max-width: 720px;
-      width: 100%;
-      background: var(--card-bg);
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s ease;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
-    .light-mode .container {
-      background: #fff;
+    .hero {
+      padding: 36px 28px 24px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0));
     }
 
-    h1 {
-      text-align: center;
-      font-size: 2.5rem;
+    .hero h2 {
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.05;
       font-weight: 800;
-      margin-bottom: 0.3rem;
+      text-align: center;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
     }
 
-    h1 span {
-      color: var(--primary-blue);
+    .hero h2 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .description {
       text-align: center;
       font-size: 1rem;
-      color: #aaa;
-      margin-bottom: 2rem;
+      color: var(--muted);
+      max-width: 700px;
+      margin: 0 auto 28px;
+      line-height: 1.65;
     }
 
     .search-box {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      max-width: 760px;
+      margin: 0 auto;
     }
 
     .search-box input {
-      flex: 1;
-      padding: 0.8rem;
-      border-radius: 10px;
-      border: none;
-      background: #2c2f42;
-      color: white;
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
       font-size: 1rem;
+      outline: none;
+      transition: 0.25s ease;
     }
 
-    .search-box button {
-      padding: 0.8rem 1.2rem;
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(110, 168, 255, 0.12);
+    }
+
+    .btn {
       border: none;
-      background: var(--highlight);
-      color: #000;
-      font-weight: bold;
-      border-radius: 10px;
+      border-radius: 16px;
+      padding: 0 18px;
+      min-height: 54px;
+      font-weight: 700;
+      font-size: 0.95rem;
       cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #08111f;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+    }
+
+    .btn-secondary {
+      background: var(--input-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .content {
+      padding: 28px;
     }
 
     .user-card {
       display: none;
-      background: #23283e;
-      padding: 2rem;
-      border-radius: 16px;
-      animation: fadeIn 0.6s ease;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 28px;
+      border-radius: 24px;
+      animation: fadeIn 0.35s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
     }
 
     .user-card img {
-      width: 100px;
-      height: 100px;
+      width: 112px;
+      height: 112px;
       border-radius: 50%;
-      display: block;
-      margin: 0 auto 1rem auto;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.08);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.22);
     }
 
-    .user-card h2 {
-      text-align: center;
-      margin-bottom: 0.3rem;
+    .profile-info {
+      flex: 1;
+      min-width: 220px;
     }
 
-    .user-card .username {
-      text-align: center;
-      font-size: 0.95rem;
-      color: #8ac6ff;
-      margin-bottom: 1rem;
+    .user-card h3 {
+      font-size: 1.7rem;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
     }
 
-    .user-card .bio {
-      text-align: center;
-      font-size: 0.95rem;
-      color: #ccc;
-      margin-bottom: 1.5rem;
+    .username {
+      font-size: 1rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .bio {
+      font-size: 0.98rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 700px;
     }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
     }
 
     .stat {
-      background: #1c1f33;
-      padding: 1rem;
-      border-radius: 10px;
+      background: var(--stat-bg);
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 18px;
       text-align: center;
+      transition: 0.2s ease;
+    }
+
+    .stat:hover {
+      transform: translateY(-2px);
     }
 
     .stat h4 {
       font-size: 0.8rem;
-      color: #aaa;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .stat p {
-      font-size: 1.2rem;
-      font-weight: bold;
+      font-size: 1.15rem;
+      font-weight: 800;
+      word-break: break-word;
     }
 
     .extra-info {
-      margin-top: 1.5rem;
-      font-size: 0.85rem;
-      line-height: 1.5;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .info-item {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      padding: 16px 18px;
+      border-radius: 16px;
+    }
+
+    .info-item strong {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .info-item span {
+      font-weight: 600;
+      font-size: 0.95rem;
     }
 
     .download-btn {
-      display: block;
-      text-align: center;
-      margin-top: 1rem;
-      background: var(--highlight);
-      color: black;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      min-height: 50px;
+      padding: 0 18px;
+      border-radius: 14px;
+      font-weight: 700;
       text-decoration: none;
+      color: #08111f;
+      background: linear-gradient(135deg, var(--success), var(--accent-2));
+      box-shadow: 0 10px 24px rgba(0,0,0,0.16);
     }
 
     .footer {
-      margin-top: 2rem;
+      padding: 22px 28px 28px;
       text-align: center;
-      font-size: 0.9rem;
-      color: #888;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      border-top: 1px solid var(--border);
     }
 
+    .footer span,
     .footer a {
-      color: var(--primary-blue);
+      color: var(--accent);
       text-decoration: none;
+      font-weight: 600;
     }
 
-    .mode-toggle {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      padding: 0.5rem 1rem;
-      background: #fff;
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
+    @media (max-width: 820px) {
+      .search-box {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .extra-info {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar {
+        justify-content: flex-end;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 14px;
+      }
+
+      .hero,
+      .content,
+      .footer {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .user-card img {
+        margin: 0 auto;
+      }
+
+      .profile-info {
+        width: 100%;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
-<body>
-  <button class="mode-toggle" onclick="toggleMode()">Toggle Mode</button>
-  <div class="container">
-    <h1><span>TikTok</span> User Lookup</h1>
-    <p class="description">Find public info about any TikTok user. It's fast, smooth and fun!</p>
-    <div class="search-box">
-      <input id="username" type="text" placeholder="Enter TikTok username...">
-      <button onclick="fetchData()">Fetch</button>
-      <button onclick="pasteClipboard()">📋</button>
-    </div>
-
-    <div id="userCard" class="user-card">
-      <img id="avatar" src="" alt="Avatar">
-      <h2 id="nickname">Nickname</h2>
-      <div class="username">@<span id="usernameDisplay">username</span></div>
-      <div class="bio" id="bio">Bio</div>
-
-      <div class="stats">
-        <div class="stat"><h4>Followers</h4><p id="followers">0</p></div>
-        <div class="stat"><h4>Following</h4><p id="following">0</p></div>
-        <div class="stat"><h4>Likes</h4><p id="likes">0</p></div>
-        <div class="stat"><h4>User ID</h4><p id="user_id">---</p></div>
+<body class="theme-dark">
+  <div class="app-shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">TT</div>
+        <div class="brand-text">
+          <h1>TikTok User Lookup</h1>
+          <p>Modern profile finder</p>
+        </div>
       </div>
 
-      <div class="extra-info">
-        <p><strong>Region:</strong> <span id="region">---</span></p>
-        <p><strong>Created:</strong> <span id="created">---</span></p>
-        <p><strong>Nickname Edited:</strong> <span id="nickname_edited">---</span></p>
-        <p><strong>Has Passkey:</strong> <span id="passkey">---</span></p>
+      <div class="toolbar">
+        <select id="themeSelector" class="theme-menu" onchange="changeTheme(this.value)">
+          <option value="theme-dark">Dark</option>
+          <option value="theme-light">Light</option>
+          <option value="theme-neon">Neon</option>
+        </select>
       </div>
-
-      <a class="download-btn" id="downloadBtn" href="#" download>Download Avatar</a>
     </div>
 
-    <div class="footer">
-      <p>Made by <a href="https://tiktok.com/@al3ibaa" target="_blank">@al3ibaa</a></p>
-      <p>Help? <a href="mailto:aleiba@aleiba.lol">aleiba@aleiba.lol</a></p>
-      <p>Discord: <span>@al3iba</span></p>
+    <div class="container">
+      <div class="hero">
+        <h2><span>TikTok</span> User Lookup</h2>
+        <p class="description">
+          Search public TikTok profile data with a cleaner, smoother, more modern interface.
+        </p>
+
+        <div class="search-box">
+          <input id="username" type="text" placeholder="Enter TikTok username...">
+          <button class="btn btn-primary" onclick="fetchData()">Fetch</button>
+          <button class="btn btn-secondary" onclick="pasteClipboard()">📋 Paste</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div id="userCard" class="user-card">
+          <div class="profile-header">
+            <img id="avatar" src="" alt="Avatar">
+            <div class="profile-info">
+              <h3 id="nickname">Nickname</h3>
+              <div class="username">@<span id="usernameDisplay">username</span></div>
+              <div class="bio" id="bio">Bio</div>
+            </div>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><h4>Followers</h4><p id="followers">0</p></div>
+            <div class="stat"><h4>Following</h4><p id="following">0</p></div>
+            <div class="stat"><h4>Likes</h4><p id="likes">0</p></div>
+            <div class="stat"><h4>User ID</h4><p id="user_id">---</p></div>
+          </div>
+
+          <div class="extra-info">
+            <div class="info-item"><strong>Region</strong><span id="region">---</span></div>
+            <div class="info-item"><strong>Created</strong><span id="created">---</span></div>
+            <div class="info-item"><strong>Nickname Edited</strong><span id="nickname_edited">---</span></div>
+            <div class="info-item"><strong>Has Passkey</strong><span id="passkey">---</span></div>
+          </div>
+
+          <a class="download-btn" id="downloadBtn" href="#" download>Download Avatar</a>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Made by <span>@a3cj</span></p>
+        <p>Help? DM me on Discord</p>
+        <p>Discord: <span>@a3cj</span></p>
+      </div>
     </div>
   </div>
 
   <script>
     const input = document.getElementById("username");
+
     input.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
         fetchData();
       }
     });
+
+    function changeTheme(theme) {
+      document.body.className = theme;
+      localStorage.setItem("site-theme", theme);
+    }
+
+    (function loadSavedTheme() {
+      const savedTheme = localStorage.getItem("site-theme") || "theme-dark";
+      document.body.className = savedTheme;
+      const themeSelector = document.getElementById("themeSelector");
+      if (themeSelector) themeSelector.value = savedTheme;
+    })();
 
     async function pasteClipboard() {
       try {
@@ -281,287 +576,277 @@
     }
 
     function countryNameFromCode(code) {
-  const regions = {
-    AD: "🇦🇩 Andorra",
-    AE: "🇦🇪 United Arab Emirates",
-    AF: "🇦🇫 Afghanistan",
-    AG: "🇦🇬 Antigua and Barbuda",
-    AI: "🇦🇮 Anguilla",
-    AL: "🇦🇱 Albania",
-    AM: "🇦🇲 Armenia",
-    AO: "🇦🇴 Angola",
-    AQ: "🇦🇶 Antarctica",
-    AR: "🇦🇷 Argentina",
-    AS: "🇦🇸 American Samoa",
-    AT: "🇦🇹 Austria",
-    AU: "🇦🇺 Australia",
-    AW: "🇦🇼 Aruba",
-    AX: "🇦🇽 Åland Islands",
-    AZ: "🇦🇿 Azerbaijan",
-    BA: "🇧🇦 Bosnia and Herzegovina",
-    BB: "🇧🇧 Barbados",
-    BD: "🇧🇩 Bangladesh",
-    BE: "🇧🇪 Belgium",
-    BF: "🇧🇫 Burkina Faso",
-    BG: "🇧🇬 Bulgaria",
-    BH: "🇧🇭 Bahrain",
-    BI: "🇧🇮 Burundi",
-    BJ: "🇧🇯 Benin",
-    BL: "🇧🇱 Saint Barthélemy",
-    BM: "🇧🇲 Bermuda",
-    BN: "🇧🇳 Brunei Darussalam",
-    BO: "🇧🇴 Bolivia, Plurinational State of",
-    BQ: "🇧🇶 Bonaire, Sint Eustatius and Saba",
-    BR: "🇧🇷 Brazil",
-    BS: "🇧🇸 Bahamas",
-    BT: "🇧🇹 Bhutan",
-    BV: "🇧🇻 Bouvet Island",
-    BW: "🇧🇼 Botswana",
-    BY: "🇧🇾 Belarus",
-    BZ: "🇧🇿 Belize",
-    CA: "🇨🇦 Canada",
-    CC: "🇨🇨 Cocos (Keeling) Islands",
-    CD: "🇨🇩 Congo, The Democratic Republic of the",
-    CF: "🇨🇫 Central African Republic",
-    CG: "🇨🇬 Congo",
-    CH: "🇨🇭 Switzerland",
-    CI: "🇨🇮 Côte d'Ivoire",
-    CK: "🇨🇰 Cook Islands",
-    CL: "🇨🇱 Chile",
-    CM: "🇨🇲 Cameroon",
-    CN: "🇨🇳 China",
-    CO: "🇨🇴 Colombia",
-    CR: "🇨🇷 Costa Rica",
-    CU: "🇨🇺 Cuba",
-    CV: "🇨🇻 Cabo Verde",
-    CW: "🇨🇼 Curaçao",
-    CX: "🇨🇽 Christmas Island",
-    CY: "🇨🇾 Cyprus",
-    CZ: "🇨🇿 Czechia",
-    DE: "🇩🇪 Germany",
-    DJ: "🇩🇯 Djibouti",
-    DK: "🇩🇰 Denmark",
-    DM: "🇩🇲 Dominica",
-    DO: "🇩🇴 Dominican Republic",
-    DZ: "🇩🇿 Algeria",
-    EC: "🇪🇨 Ecuador",
-    EE: "🇪🇪 Estonia",
-    EG: "🇪🇬 Egypt",
-    EH: "🇪🇭 Western Sahara",
-    ER: "🇪🇷 Eritrea",
-    ES: "🇪🇸 Spain",
-    ET: "🇪🇹 Ethiopia",
-    FI: "🇫🇮 Finland",
-    FJ: "🇫🇯 Fiji",
-    FK: "🇫🇰 Falkland Islands (Malvinas)",
-    FM: "🇫🇲 Micronesia, Federated States of",
-    FO: "🇫🇴 Faroe Islands",
-    FR: "🇫🇷 France",
-    GA: "🇬🇦 Gabon",
-    GB: "🇬🇧 United Kingdom",
-    GD: "🇬🇩 Grenada",
-    GE: "🇬🇪 Georgia",
-    GF: "🇬🇫 French Guiana",
-    GG: "🇬🇬 Guernsey",
-    GH: "🇬🇭 Ghana",
-    GI: "🇬🇮 Gibraltar",
-    GL: "🇬🇱 Greenland",
-    GM: "🇬🇲 Gambia",
-    GN: "🇬🇳 Guinea",
-    GP: "🇬🇵 Guadeloupe",
-    GQ: "🇬🇶 Equatorial Guinea",
-    GR: "🇬🇷 Greece",
-    GS: "🇬🇸 South Georgia and the South Sandwich Islands",
-    GT: "🇬🇹 Guatemala",
-    GU: "🇬🇺 Guam",
-    GW: "🇬🇼 Guinea-Bissau",
-    GY: "🇬🇾 Guyana",
-    HK: "🇭🇰 Hong Kong",
-    HM: "🇭🇲 Heard Island and McDonald Islands",
-    HN: "🇭🇳 Honduras",
-    HR: "🇭🇷 Croatia",
-    HT: "🇭🇹 Haiti",
-    HU: "🇭🇺 Hungary",
-    ID: "🇮🇩 Indonesia",
-    IE: "🇮🇪 Ireland",
-    IL: "🇮🇱 Israel",
-    IM: "🇮🇲 Isle of Man",
-    IN: "🇮🇳 India",
-    IO: "🇮🇴 British Indian Ocean Territory",
-    IQ: "🇮🇶 Iraq",
-    IR: "🇮🇷 Iran, Islamic Republic of",
-    IS: "🇮🇸 Iceland",
-    IT: "🇮🇹 Italy",
-    JE: "🇯🇪 Jersey",
-    JM: "🇯🇲 Jamaica",
-    JO: "🇯🇴 Jordan",
-    JP: "🇯🇵 Japan",
-    KE: "🇰🇪 Kenya",
-    KG: "🇰🇬 Kyrgyzstan",
-    KH: "🇰🇭 Cambodia",
-    KI: "🇰🇮 Kiribati",
-    KM: "🇰🇲 Comoros",
-    KN: "🇰🇳 Saint Kitts and Nevis",
-    KP: "🇰🇵 Korea, Democratic People's Republic of",
-    KR: "🇰🇷 Korea, Republic of",
-    KW: "🇰🇼 Kuwait",
-    KY: "🇰🇾 Cayman Islands",
-    KZ: "🇰🇿 Kazakhstan",
-    LA: "🇱🇦 Lao People's Democratic Republic",
-    LB: "🇱🇧 Lebanon",
-    LC: "🇱🇨 Saint Lucia",
-    LI: "🇱🇮 Liechtenstein",
-    LK: "🇱🇰 Sri Lanka",
-    LR: "🇱🇷 Liberia",
-    LS: "🇱🇸 Lesotho",
-    LT: "🇱🇹 Lithuania",
-    LU: "🇱🇺 Luxembourg",
-    LV: "🇱🇻 Latvia",
-    LY: "🇱🇾 Libya",
-    MA: "🇲🇦 Morocco",
-    MC: "🇲🇨 Monaco",
-    MD: "🇲🇩 Moldova, Republic of",
-    ME: "🇲🇪 Montenegro",
-    MF: "🇲🇫 Saint Martin (French part)",
-    MG: "🇲🇬 Madagascar",
-    MH: "🇲🇭 Marshall Islands",
-    MK: "🇲🇰 North Macedonia",
-    ML: "🇲🇱 Mali",
-    MM: "🇲🇲 Myanmar",
-    MN: "🇲🇳 Mongolia",
-    MO: "🇲🇴 Macao",
-    MP: "🇲🇵 Northern Mariana Islands",
-    MQ: "🇲🇶 Martinique",
-    MR: "🇲🇷 Mauritania",
-    MS: "🇲🇸 Montserrat",
-    MT: "🇲🇹 Malta",
-    MU: "🇲🇺 Mauritius",
-    MV: "🇲🇻 Maldives",
-    MW: "🇲🇼 Malawi",
-    MX: "🇲🇽 Mexico",
-    MY: "🇲🇾 Malaysia",
-    MZ: "🇲🇿 Mozambique",
-    NA: "🇳🇦 Namibia",
-    NC: "🇳🇨 New Caledonia",
-    NE: "🇳🇪 Niger",
-    NF: "🇳🇫 Norfolk Island",
-    NG: "🇳🇬 Nigeria",
-    NI: "🇳🇮 Nicaragua",
-    NL: "🇳🇱 Netherlands",
-    NO: "🇳🇴 Norway",
-    NP: "🇳🇵 Nepal",
-    NR: "🇳🇷 Nauru",
-    NU: "🇳🇺 Niue",
-    NZ: "🇳🇿 New Zealand",
-    OM: "🇴🇲 Oman",
-    PA: "🇵🇦 Panama",
-    PE: "🇵🇪 Peru",
-    PF: "🇵🇫 French Polynesia",
-    PG: "🇵🇬 Papua New Guinea",
-    PH: "🇵🇭 Philippines",
-    PK: "🇵🇰 Pakistan",
-    PL: "🇵🇱 Poland",
-    PM: "🇵🇲 Saint Pierre and Miquelon",
-    PN: "🇵🇳 Pitcairn",
-    PR: "🇵🇷 Puerto Rico",
-    PS: "🇵🇸 Palestine, State of",
-    PT: "🇵🇹 Portugal",
-    PW: "🇵🇼 Palau",
-    PY: "🇵🇾 Paraguay",
-    QA: "🇶🇦 Qatar",
-    RE: "🇷🇪 Réunion",
-    RO: "🇷🇴 Romania",
-    RS: "🇷🇸 Serbia",
-    RU: "🇷🇺 Russian Federation",
-    RW: "🇷🇼 Rwanda",
-    SA: "🇸🇦 Saudi Arabia",
-    SB: "🇸🇧 Solomon Islands",
-    SC: "🇸🇨 Seychelles",
-    SD: "🇸🇩 Sudan",
-    SE: "🇸🇪 Sweden",
-    SG: "🇸🇬 Singapore",
-    SH: "🇸🇭 Saint Helena, Ascension and Tristan da Cunha",
-    SI: "🇸🇮 Slovenia",
-    SJ: "🇸🇯 Svalbard and Jan Mayen",
-    SK: "🇸🇰 Slovakia",
-    SL: "🇸🇱 Sierra Leone",
-    SM: "🇸🇲 San Marino",
-    SN: "🇸🇳 Senegal",
-    SO: "🇸🇴 Somalia",
-    SR: "🇸🇷 Suriname",
-    SS: "🇸🇸 South Sudan",
-    ST: "🇸🇹 Sao Tome and Principe",
-    SV: "🇸🇻 El Salvador",
-    SX: "🇸🇽 Sint Maarten (Dutch part)",
-    SY: "🇸🇾 Syrian Arab Republic",
-    SZ: "🇸🇿 Eswatini",
-    TC: "🇹🇨 Turks and Caicos Islands",
-    TD: "🇹🇩 Chad",
-    TF: "🇹🇫 French Southern Territories",
-    TG: "🇹🇬 Togo",
-    TH: "🇹🇭 Thailand",
-    TJ: "🇹🇯 Tajikistan",
-    TK: "🇹🇰 Tokelau",
-    TL: "🇹🇱 Timor-Leste",
-    TM: "🇹🇲 Turkmenistan",
-    TN: "🇹🇳 Tunisia",
-    TO: "🇹🇴 Tonga",
-    TR: "🇹🇷 Turkey",
-    TT: "🇹🇹 Trinidad and Tobago",
-    TV: "🇹🇻 Tuvalu",
-    TW: "🇹🇼 Taiwan, Province of China",
-    TZ: "🇹🇿 Tanzania, United Republic of",
-    UA: "🇺🇦 Ukraine",
-    UG: "🇺🇬 Uganda",
-    UM: "🇺🇲 United States Minor Outlying Islands",
-    US: "🇺🇸 United States",
-    UY: "🇺🇾 Uruguay",
-    UZ: "🇺🇿 Uzbekistan",
-    VA: "🇻🇦 Holy See (Vatican City State)",
-    VC: "🇻🇨 Saint Vincent and the Grenadines",
-    VE: "🇻🇪 Venezuela, Bolivarian Republic of",
-    VG: "🇻🇬 Virgin Islands, British",
-    VI: "🇻🇮 Virgin Islands, U.S.",
-    VN: "🇻🇳 Viet Nam",
-    VU: "🇻🇺 Vanuatu",
-    WF: "🇼🇫 Wallis and Futuna",
-    WS: "🇼🇸 Samoa",
-    YE: "🇾🇪 Yemen",
-    YT: "🇾🇹 Mayotte",
-    ZA: "🇿🇦 South Africa",
-    ZM: "🇿🇲 Zambia",
-    ZW: "🇿🇼 Zimbabwe",
-  };
-  return regions[code] || code;
-}
+      const regions = {
+        AD: "🇦🇩 Andorra",
+        AE: "🇦🇪 United Arab Emirates",
+        AF: "🇦🇫 Afghanistan",
+        AG: "🇦🇬 Antigua and Barbuda",
+        AI: "🇦🇮 Anguilla",
+        AL: "🇦🇱 Albania",
+        AM: "🇦🇲 Armenia",
+        AO: "🇦🇴 Angola",
+        AQ: "🇦🇶 Antarctica",
+        AR: "🇦🇷 Argentina",
+        AS: "🇦🇸 American Samoa",
+        AT: "🇦🇹 Austria",
+        AU: "🇦🇺 Australia",
+        AW: "🇦🇼 Aruba",
+        AX: "🇦🇽 Åland Islands",
+        AZ: "🇦🇿 Azerbaijan",
+        BA: "🇧🇦 Bosnia and Herzegovina",
+        BB: "🇧🇧 Barbados",
+        BD: "🇧🇩 Bangladesh",
+        BE: "🇧🇪 Belgium",
+        BF: "🇧🇫 Burkina Faso",
+        BG: "🇧🇬 Bulgaria",
+        BH: "🇧🇭 Bahrain",
+        BI: "🇧🇮 Burundi",
+        BJ: "🇧🇯 Benin",
+        BL: "🇧🇱 Saint Barthélemy",
+        BM: "🇧🇲 Bermuda",
+        BN: "🇧🇳 Brunei Darussalam",
+        BO: "🇧🇴 Bolivia",
+        BQ: "🇧🇶 Bonaire, Sint Eustatius and Saba",
+        BR: "🇧🇷 Brazil",
+        BS: "🇧🇸 Bahamas",
+        BT: "🇧🇹 Bhutan",
+        BV: "🇧🇻 Bouvet Island",
+        BW: "🇧🇼 Botswana",
+        BY: "🇧🇾 Belarus",
+        BZ: "🇧🇿 Belize",
+        CA: "🇨🇦 Canada",
+        CC: "🇨🇨 Cocos (Keeling) Islands",
+        CD: "🇨🇩 DR Congo",
+        CF: "🇨🇫 Central African Republic",
+        CG: "🇨🇬 Congo",
+        CH: "🇨🇭 Switzerland",
+        CI: "🇨🇮 Côte d'Ivoire",
+        CK: "🇨🇰 Cook Islands",
+        CL: "🇨🇱 Chile",
+        CM: "🇨🇲 Cameroon",
+        CN: "🇨🇳 China",
+        CO: "🇨🇴 Colombia",
+        CR: "🇨🇷 Costa Rica",
+        CU: "🇨🇺 Cuba",
+        CV: "🇨🇻 Cabo Verde",
+        CW: "🇨🇼 Curaçao",
+        CX: "🇨🇽 Christmas Island",
+        CY: "🇨🇾 Cyprus",
+        CZ: "🇨🇿 Czechia",
+        DE: "🇩🇪 Germany",
+        DJ: "🇩🇯 Djibouti",
+        DK: "🇩🇰 Denmark",
+        DM: "🇩🇲 Dominica",
+        DO: "🇩🇴 Dominican Republic",
+        DZ: "🇩🇿 Algeria",
+        EC: "🇪🇨 Ecuador",
+        EE: "🇪🇪 Estonia",
+        EG: "🇪🇬 Egypt",
+        EH: "🇪🇭 Western Sahara",
+        ER: "🇪🇷 Eritrea",
+        ES: "🇪🇸 Spain",
+        ET: "🇪🇹 Ethiopia",
+        FI: "🇫🇮 Finland",
+        FJ: "🇫🇯 Fiji",
+        FK: "🇫🇰 Falkland Islands",
+        FM: "🇫🇲 Micronesia",
+        FO: "🇫🇴 Faroe Islands",
+        FR: "🇫🇷 France",
+        GA: "🇬🇦 Gabon",
+        GB: "🇬🇧 United Kingdom",
+        GD: "🇬🇩 Grenada",
+        GE: "🇬🇪 Georgia",
+        GF: "🇬🇫 French Guiana",
+        GG: "🇬🇬 Guernsey",
+        GH: "🇬🇭 Ghana",
+        GI: "🇬🇮 Gibraltar",
+        GL: "🇬🇱 Greenland",
+        GM: "🇬🇲 Gambia",
+        GN: "🇬🇳 Guinea",
+        GP: "🇬🇵 Guadeloupe",
+        GQ: "🇬🇶 Equatorial Guinea",
+        GR: "🇬🇷 Greece",
+        GT: "🇬🇹 Guatemala",
+        GU: "🇬🇺 Guam",
+        GW: "🇬🇼 Guinea-Bissau",
+        GY: "🇬🇾 Guyana",
+        HK: "🇭🇰 Hong Kong",
+        HN: "🇭🇳 Honduras",
+        HR: "🇭🇷 Croatia",
+        HT: "🇭🇹 Haiti",
+        HU: "🇭🇺 Hungary",
+        ID: "🇮🇩 Indonesia",
+        IE: "🇮🇪 Ireland",
+        IL: "🇮🇱 Israel",
+        IM: "🇮🇲 Isle of Man",
+        IN: "🇮🇳 India",
+        IQ: "🇮🇶 Iraq",
+        IR: "🇮🇷 Iran",
+        IS: "🇮🇸 Iceland",
+        IT: "🇮🇹 Italy",
+        JE: "🇯🇪 Jersey",
+        JM: "🇯🇲 Jamaica",
+        JO: "🇯🇴 Jordan",
+        JP: "🇯🇵 Japan",
+        KE: "🇰🇪 Kenya",
+        KG: "🇰🇬 Kyrgyzstan",
+        KH: "🇰🇭 Cambodia",
+        KI: "🇰🇮 Kiribati",
+        KM: "🇰🇲 Comoros",
+        KN: "🇰🇳 Saint Kitts and Nevis",
+        KP: "🇰🇵 North Korea",
+        KR: "🇰🇷 South Korea",
+        KW: "🇰🇼 Kuwait",
+        KY: "🇰🇾 Cayman Islands",
+        KZ: "🇰🇿 Kazakhstan",
+        LA: "🇱🇦 Laos",
+        LB: "🇱🇧 Lebanon",
+        LC: "🇱🇨 Saint Lucia",
+        LI: "🇱🇮 Liechtenstein",
+        LK: "🇱🇰 Sri Lanka",
+        LR: "🇱🇷 Liberia",
+        LS: "🇱🇸 Lesotho",
+        LT: "🇱🇹 Lithuania",
+        LU: "🇱🇺 Luxembourg",
+        LV: "🇱🇻 Latvia",
+        LY: "🇱🇾 Libya",
+        MA: "🇲🇦 Morocco",
+        MC: "🇲🇨 Monaco",
+        MD: "🇲🇩 Moldova",
+        ME: "🇲🇪 Montenegro",
+        MG: "🇲🇬 Madagascar",
+        MH: "🇲🇭 Marshall Islands",
+        MK: "🇲🇰 North Macedonia",
+        ML: "🇲🇱 Mali",
+        MM: "🇲🇲 Myanmar",
+        MN: "🇲🇳 Mongolia",
+        MO: "🇲🇴 Macao",
+        MP: "🇲🇵 Northern Mariana Islands",
+        MQ: "🇲🇶 Martinique",
+        MR: "🇲🇷 Mauritania",
+        MS: "🇲🇸 Montserrat",
+        MT: "🇲🇹 Malta",
+        MU: "🇲🇺 Mauritius",
+        MV: "🇲🇻 Maldives",
+        MW: "🇲🇼 Malawi",
+        MX: "🇲🇽 Mexico",
+        MY: "🇲🇾 Malaysia",
+        MZ: "🇲🇿 Mozambique",
+        NA: "🇳🇦 Namibia",
+        NC: "🇳🇨 New Caledonia",
+        NE: "🇳🇪 Niger",
+        NF: "🇳🇫 Norfolk Island",
+        NG: "🇳🇬 Nigeria",
+        NI: "🇳🇮 Nicaragua",
+        NL: "🇳🇱 Netherlands",
+        NO: "🇳🇴 Norway",
+        NP: "🇳🇵 Nepal",
+        NR: "🇳🇷 Nauru",
+        NU: "🇳🇺 Niue",
+        NZ: "🇳🇿 New Zealand",
+        OM: "🇴🇲 Oman",
+        PA: "🇵🇦 Panama",
+        PE: "🇵🇪 Peru",
+        PF: "🇵🇫 French Polynesia",
+        PG: "🇵🇬 Papua New Guinea",
+        PH: "🇵🇭 Philippines",
+        PK: "🇵🇰 Pakistan",
+        PL: "🇵🇱 Poland",
+        PR: "🇵🇷 Puerto Rico",
+        PS: "🇵🇸 Palestine",
+        PT: "🇵🇹 Portugal",
+        PW: "🇵🇼 Palau",
+        PY: "🇵🇾 Paraguay",
+        QA: "🇶🇦 Qatar",
+        RE: "🇷🇪 Réunion",
+        RO: "🇷🇴 Romania",
+        RS: "🇷🇸 Serbia",
+        RU: "🇷🇺 Russia",
+        RW: "🇷🇼 Rwanda",
+        SA: "🇸🇦 Saudi Arabia",
+        SB: "🇸🇧 Solomon Islands",
+        SC: "🇸🇨 Seychelles",
+        SD: "🇸🇩 Sudan",
+        SE: "🇸🇪 Sweden",
+        SG: "🇸🇬 Singapore",
+        SI: "🇸🇮 Slovenia",
+        SK: "🇸🇰 Slovakia",
+        SL: "🇸🇱 Sierra Leone",
+        SM: "🇸🇲 San Marino",
+        SN: "🇸🇳 Senegal",
+        SO: "🇸🇴 Somalia",
+        SR: "🇸🇷 Suriname",
+        SS: "🇸🇸 South Sudan",
+        ST: "🇸🇹 Sao Tome and Principe",
+        SV: "🇸🇻 El Salvador",
+        SX: "🇸🇽 Sint Maarten",
+        SY: "🇸🇾 Syria",
+        SZ: "🇸🇿 Eswatini",
+        TC: "🇹🇨 Turks and Caicos Islands",
+        TD: "🇹🇩 Chad",
+        TG: "🇹🇬 Togo",
+        TH: "🇹🇭 Thailand",
+        TJ: "🇹🇯 Tajikistan",
+        TL: "🇹🇱 Timor-Leste",
+        TM: "🇹🇲 Turkmenistan",
+        TN: "🇹🇳 Tunisia",
+        TO: "🇹🇴 Tonga",
+        TR: "🇹🇷 Turkey",
+        TT: "🇹🇹 Trinidad and Tobago",
+        TV: "🇹🇻 Tuvalu",
+        TW: "🇹🇼 Taiwan",
+        TZ: "🇹🇿 Tanzania",
+        UA: "🇺🇦 Ukraine",
+        UG: "🇺🇬 Uganda",
+        US: "🇺🇸 United States",
+        UY: "🇺🇾 Uruguay",
+        UZ: "🇺🇿 Uzbekistan",
+        VA: "🇻🇦 Vatican City",
+        VC: "🇻🇨 Saint Vincent and the Grenadines",
+        VE: "🇻🇪 Venezuela",
+        VG: "🇻🇬 British Virgin Islands",
+        VI: "🇻🇮 U.S. Virgin Islands",
+        VN: "🇻🇳 Vietnam",
+        VU: "🇻🇺 Vanuatu",
+        WF: "🇼🇫 Wallis and Futuna",
+        WS: "🇼🇸 Samoa",
+        YE: "🇾🇪 Yemen",
+        YT: "🇾🇹 Mayotte",
+        ZA: "🇿🇦 South Africa",
+        ZM: "🇿🇲 Zambia",
+        ZW: "🇿🇼 Zimbabwe",
+      };
+      return regions[code] || code || "Unknown";
+    }
 
     async function fetchData() {
       const username = input.value.trim();
-      if (!username) return alert('Please enter a username.');
+      if (!username) return alert("Please enter a username.");
 
-      const res = await fetch(`/lookup?username=${username}`);
-      const data = await res.json();
+      try {
+        const res = await fetch(`/lookup?username=${encodeURIComponent(username)}`);
+        const data = await res.json();
 
-      if (data.error) return alert(data.error);
+        if (data.error) return alert(data.error);
 
-      document.getElementById("userCard").style.display = "block";
-      document.getElementById("nickname").textContent = data.nickname;
-      document.getElementById("usernameDisplay").textContent = data.username;
-      document.getElementById("avatar").src = data.profile_pic;
-      document.getElementById("downloadBtn").href = data.profile_pic;
-      document.getElementById("bio").textContent = data.bio;
-      document.getElementById("followers").textContent = data.followers.toLocaleString();
-      document.getElementById("following").textContent = data.following.toLocaleString();
-      document.getElementById("likes").textContent = data.likes.toLocaleString();
-      document.getElementById("user_id").textContent = data.user_id;
-      document.getElementById("region").textContent = countryNameFromCode(data.region || '');
-      document.getElementById("created").textContent = data.created || 'Unknown';
-      document.getElementById("nickname_edited").textContent = data.nickname_edited || 'Unknown';
-      document.getElementById("passkey").textContent = data.has_passkey ? 'Yes' : 'No';
-    }
-
-    function toggleMode() {
-      document.body.classList.toggle("light-mode");
+        document.getElementById("userCard").style.display = "block";
+        document.getElementById("nickname").textContent = data.nickname || "Unknown";
+        document.getElementById("usernameDisplay").textContent = data.username || username;
+        document.getElementById("avatar").src = data.profile_pic || "";
+        document.getElementById("downloadBtn").href = data.profile_pic || "#";
+        document.getElementById("bio").textContent = data.bio || "No bio available.";
+        document.getElementById("followers").textContent = Number(data.followers || 0).toLocaleString();
+        document.getElementById("following").textContent = Number(data.following || 0).toLocaleString();
+        document.getElementById("likes").textContent = Number(data.likes || 0).toLocaleString();
+        document.getElementById("user_id").textContent = data.user_id || "---";
+        document.getElementById("region").textContent = countryNameFromCode(data.region || "");
+        document.getElementById("created").textContent = data.created || "Unknown";
+        document.getElementById("nickname_edited").textContent = data.nickname_edited || "Unknown";
+        document.getElementById("passkey").textContent = data.has_passkey ? "Yes" : "No";
+      } catch (err) {
+        alert("Failed to fetch user data.");
+        console.error(err);
+      }
     }
   </script>
 </body>
