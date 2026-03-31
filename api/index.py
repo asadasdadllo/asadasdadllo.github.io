@@ -15,13 +15,7 @@ def extract_region_via_script(username):
     try:
         headers = {
             "Host": "www.tiktok.com",
-            "sec-ch-ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"99\", \"Google Chrome\";v=\"99\"",
-            "sec-ch-ua-mobile": "?1",
-            "sec-ch-ua-platform": "\"Android\"",
-            "upgrade-insecure-requests": "1",
             "user-agent": "Mozilla/5.0 (Linux; Android 8.0.0; Plume L2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.88 Mobile Safari/537.36",
-            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-            "accept-language": "en-US,en;q=0.9"
         }
         response = requests.get(f'https://www.tiktok.com/@{username}', headers=headers, timeout=10)
         if response.status_code != 200:
@@ -48,10 +42,8 @@ def get_user_info(username):
         soup = BeautifulSoup(html, "html.parser")
         script = soup.find("script", {"id": "__UNIVERSAL_DATA_FOR_REHYDRATION__"})
         data = json.loads(script.string)
-
         user = data["__DEFAULT_SCOPE__"]["webapp.user-detail"]["userInfo"]["user"]
         stats = data["__DEFAULT_SCOPE__"]["webapp.user-detail"]["userInfo"]["stats"]
-
         return {
             "nickname": user.get("nickname"),
             "username": user.get("uniqueId"),
@@ -66,8 +58,7 @@ def get_user_info(username):
             "username_changed": convert_unix(user.get("uniqueIdModifyTime")),
             "region": extract_region_via_script(username)
         }
-    except Exception as e:
-        print(f"Error fetching user: {e}")
+    except:
         return None
 
 def check_passkey(username):
@@ -77,8 +68,6 @@ def check_passkey(username):
         url = f'https://api16-normal-c-useast1a.tiktokv.com/passport/find_account/tiktok_username/?request_tag_from=h5&iid={iid}&device_id={did}&ac=wifi&channel=googleplay&aid=567753'
         payload = f'mix_mode=1&username={username}'
         r = requests.post(url, data=payload, timeout=10).json()
-        if r['message'] != 'success':
-            return False
         token = r['data']['token']
         check_url = f'https://api16-normal-c-useast1a.tiktokv.com/passport/auth/available_ways/?request_tag_from=h5&not_login_ticket={token}&iid={iid}&device_id={did}&ac=wifi&channel=googleplay&aid=567753'
         result = requests.get(check_url, timeout=10).json()
@@ -86,25 +75,9 @@ def check_passkey(username):
     except:
         return False
 
-# Actual Lookup API route
-@app.route('/lookup')
-def lookup():
-    username = request.args.get('username')
-    if not username:
-        return jsonify({"error": "Username is required."}), 400
-
-    user_info = get_user_info(username)
-    if not user_info:
-        return jsonify({"error": "User not found or TikTok layout changed."}), 404
-
-    user_info["has_passkey"] = check_passkey(username)
-    return jsonify(user_info)
-
-# Catch-all for Home Page and Assets
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    # If the user goes to /lookup, handle it
     if path == 'lookup':
         username = request.args.get('username')
         if not username:
@@ -114,8 +87,6 @@ def catch_all(path):
             return jsonify({"error": "User not found."}), 404
         user_info["has_passkey"] = check_passkey(username)
         return jsonify(user_info)
-        
-    # Otherwise, send the index.html from the SAME folder
     return send_from_directory(os.path.dirname(__file__), 'index.html')
 
 app = app
