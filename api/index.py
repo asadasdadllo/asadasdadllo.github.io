@@ -9,7 +9,8 @@ import os
 app = Flask(__name__)
 
 def convert_unix(unix):
-    return datetime.utcfromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S') if unix else None
+    # Using timestamp because utcfromtimestamp is deprecated in newer Python
+    return datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S') if unix else None
 
 def extract_region_via_script(username):
     try:
@@ -23,7 +24,7 @@ def extract_region_via_script(username):
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
             "accept-language": "en-US,en;q=0.9"
         }
-        response = requests.get(f'https://www.tiktok.com/@{username}', headers=headers)
+        response = requests.get(f'https://www.tiktok.com/@{username}', headers=headers, timeout=10)
         if response.status_code != 200:
             return "N/A"
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -44,7 +45,7 @@ def get_user_info(username):
     try:
         url = f'https://tiktok.com/@{username}'
         headers = {'user-agent': 'Mozilla/5.0'}
-        html = requests.get(url, headers=headers).text
+        html = requests.get(url, headers=headers, timeout=10).text
         soup = BeautifulSoup(html, "html.parser")
         script = soup.find("script", {"id": "__UNIVERSAL_DATA_FOR_REHYDRATION__"})
         data = json.loads(script.string)
@@ -67,7 +68,7 @@ def get_user_info(username):
             "region": extract_region_via_script(username)
         }
     except Exception as e:
-        print(e)
+        print(f"Error fetching user: {e}")
         return None
 
 def check_passkey(username):
@@ -76,13 +77,13 @@ def check_passkey(username):
         did = int(bin(int(time() + time() * 0.0004))[2:].zfill(32) + "0" * 32, 2)
         url = f'https://api16-normal-c-useast1a.tiktokv.com/passport/find_account/tiktok_username/?request_tag_from=h5&iid={iid}&device_id={did}&ac=wifi&channel=googleplay&aid=567753'
         payload = f'mix_mode=1&username={username}'
-        r = requests.post(url, data=payload).json()
+        r = requests.post(url, data=payload, timeout=10).json()
         if r['message'] != 'success':
             return False
         token = r['data']['token']
         check_url = f'https://api16-normal-c-useast1a.tiktokv.com/passport/auth/available_ways/?request_tag_from=h5&not_login_ticket={token}&iid={iid}&device_id={did}&ac=wifi&channel=googleplay&aid=567753'
-        result = requests.get(check_url).json()
-        return result['data']['has_passkey']
+        result = requests.get(check_url, timeout=10).json()
+        return result['data'].get('has_passkey', False)
     except:
         return False
 
@@ -101,8 +102,9 @@ def lookup():
 
 @app.route('/')
 def index():
-    # Points to index.html in your ROOT folder
-    return send_from_directory(os.path.join(app.root_path, '..'), 'index.html')
+    # This finds the directory where index.html lives (one level up from /api)
+    root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    return send_from_directory(root_path, 'index.html')
 
-# Vercel needs this
+# Essential for Vercel
 app = app
