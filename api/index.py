@@ -9,7 +9,6 @@ import os
 app = Flask(__name__)
 
 def convert_unix(unix):
-    # Using timestamp because utcfromtimestamp is deprecated in newer Python
     return datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S') if unix else None
 
 def extract_region_via_script(username):
@@ -87,6 +86,7 @@ def check_passkey(username):
     except:
         return False
 
+# Actual Lookup API route
 @app.route('/lookup')
 def lookup():
     username = request.args.get('username')
@@ -100,11 +100,18 @@ def lookup():
     user_info["has_passkey"] = check_passkey(username)
     return jsonify(user_info)
 
-@app.route('/')
-def index():
+# Catch-all for Home Page and Assets
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
     # This finds the directory where index.html lives (one level up from /api)
     root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    
+    # If someone asks for favicon or other files specifically
+    if os.path.exists(os.path.join(root_path, path)) and path != "":
+        return send_from_directory(root_path, path)
+    
+    # Otherwise, default to index.html
     return send_from_directory(root_path, 'index.html')
 
-# Essential for Vercel
 app = app
