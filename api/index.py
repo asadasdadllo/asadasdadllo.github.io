@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, send_from_directory
-from requests import get, post
+import requests
 from bs4 import BeautifulSoup
 import json
 from time import time
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 
@@ -22,13 +23,13 @@ def extract_region_via_script(username):
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
             "accept-language": "en-US,en;q=0.9"
         }
-        response = get(f'https://www.tiktok.com/@{username}', headers=headers)
+        response = requests.get(f'https://www.tiktok.com/@{username}', headers=headers)
         if response.status_code != 200:
             return "N/A"
         soup = BeautifulSoup(response.text, 'html.parser')
         user_data_script = None
         for script in soup.find_all('script'):
-            if 'userInfo' in script.text:
+            if script.string and 'userInfo' in script.string:
                 user_data_script = script.string
                 break
         if not user_data_script:
@@ -43,7 +44,7 @@ def get_user_info(username):
     try:
         url = f'https://tiktok.com/@{username}'
         headers = {'user-agent': 'Mozilla/5.0'}
-        html = get(url, headers=headers).text
+        html = requests.get(url, headers=headers).text
         soup = BeautifulSoup(html, "html.parser")
         script = soup.find("script", {"id": "__UNIVERSAL_DATA_FOR_REHYDRATION__"})
         data = json.loads(script.string)
@@ -75,12 +76,12 @@ def check_passkey(username):
         did = int(bin(int(time() + time() * 0.0004))[2:].zfill(32) + "0" * 32, 2)
         url = f'https://api16-normal-c-useast1a.tiktokv.com/passport/find_account/tiktok_username/?request_tag_from=h5&iid={iid}&device_id={did}&ac=wifi&channel=googleplay&aid=567753'
         payload = f'mix_mode=1&username={username}'
-        r = post(url, data=payload).json()
+        r = requests.post(url, data=payload).json()
         if r['message'] != 'success':
             return False
         token = r['data']['token']
         check_url = f'https://api16-normal-c-useast1a.tiktokv.com/passport/auth/available_ways/?request_tag_from=h5&not_login_ticket={token}&iid={iid}&device_id={did}&ac=wifi&channel=googleplay&aid=567753'
-        result = get(check_url).json()
+        result = requests.get(check_url).json()
         return result['data']['has_passkey']
     except:
         return False
@@ -100,7 +101,8 @@ def lookup():
 
 @app.route('/')
 def index():
-    return send_from_directory('', 'index.html')
+    # Points to index.html in your ROOT folder
+    return send_from_directory(os.path.join(app.root_path, '..'), 'index.html')
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+# Vercel needs this
+app = app
