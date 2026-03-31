@@ -3,12 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Elite | Premium Lookup</title>
+    
+    <title>Tiktok User Lookup</title>
+    <meta name="title" content="Tiktok User Lookup">
+    <meta name="description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
+
+    <link rel="icon" type="image/webp" href="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://aleiba.lol/">
+    <meta property="og:title" content="Tiktok User Lookup">
+    <meta property="og:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
+    <meta property="og:image" content="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://aleiba.lol/">
+    <meta property="twitter:title" content="Tiktok User Lookup">
+    <meta property="twitter:description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
+    <meta property="twitter:image" content="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* THEME ENGINE - Variables that change per theme */
         :root {
             --accent: #00fff2;
             --accent-glow: rgba(0, 255, 242, 0.3);
@@ -30,13 +48,6 @@
             --bg-bottom: rgba(6, 78, 59, 0.1);
         }
 
-        .theme-ice { 
-            --accent: #f1f5f9; 
-            --accent-glow: rgba(255, 255, 255, 0.2);
-            --bg-top: rgba(203, 213, 225, 0.2);
-            --bg-bottom: rgba(15, 23, 42, 0.3);
-        }
-
         .theme-rose { 
             --accent: #fb7185; 
             --accent-glow: rgba(251, 113, 133, 0.4);
@@ -49,11 +60,9 @@
             background: #020617;
             color: #f8fafc;
             min-height: 100vh;
-            overflow-x: hidden;
-            transition: all 0.5s ease;
+            transition: background 0.8s ease;
         }
 
-        /* Shifting Mesh Background */
         .mesh-gradient {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -62,7 +71,7 @@
                 radial-gradient(at 0% 0%, var(--bg-top) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, var(--bg-bottom) 0px, transparent 50%);
             filter: blur(80px);
-            transition: all 0.8s ease;
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass {
@@ -70,51 +79,73 @@
             backdrop-filter: blur(24px) saturate(180%);
             -webkit-backdrop-filter: blur(24px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: border 0.3s ease, box-shadow 0.3s ease;
         }
 
         .premium-card {
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .premium-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
             border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
+            box-shadow: 0 15px 40px -10px var(--accent-glow);
         }
 
         .accent-text { color: var(--accent); transition: color 0.5s ease; }
         .accent-bg { background-color: var(--accent); transition: background 0.5s ease; }
 
-        input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        #targetUser { transition: all 0.3s ease; }
+        #targetUser:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent), 0 0 25px var(--accent-glow);
+            background: rgba(255, 255, 255, 0.08);
+        }
 
-        .fade-in { animation: fadeInUp 0.6s forwards ease-out; }
+        /* Staggered Entrance */
+        .results-container.active .fade-in-node {
+            animation: fadeInUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .search-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 var(--accent-glow); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 255, 242, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 242, 0); }
         }
     </style>
 </head>
 <body class="p-4 md:p-8">
-    <div class="mesh-gradient" id="bgMesh"></div>
+    <div class="mesh-gradient"></div>
 
     <nav class="max-w-6xl mx-auto mb-12 flex justify-between items-center glass p-4 rounded-3xl">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 accent-bg rounded-xl flex items-center justify-center shadow-lg">
-                <i data-lucide="zap" class="text-black w-6 h-6"></i>
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
+                <img src="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp" alt="Logo" class="w-full h-full object-cover">
             </div>
             <div>
-                <h1 class="text-lg font-extrabold tracking-tight leading-none">TikTok Lookup</h1>
+                <h1 class="text-xl font-extrabold tracking-tight leading-none">
+                    <span class="text-white">aleiba.</span><span class="accent-text">lol</span>
+                </h1>
                 <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Premium Analytics</p>
             </div>
         </div>
         
-        <select onchange="updateTheme(this.value)" class="bg-slate-900 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none cursor-pointer">
+        <select onchange="updateTheme(this.value)" class="bg-slate-950 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none cursor-pointer hover:border-white/30 transition-colors">
             <option value="default">Theme: Neon</option>
             <option value="theme-violet">Violet</option>
             <option value="theme-emerald">Emerald</option>
             <option value="theme-rose">Rose</option>
-            <option value="theme-ice">Ice</option>
         </select>
     </nav>
 
@@ -123,24 +154,25 @@
             <h2 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
                 TikTok <span class="accent-text">User Lookup</span>
             </h2>
-            <p class="text-gray-400 max-w-xl mx-auto font-medium">Search profile data with an intentionally designed, high-performance interface.</p>
+            <p class="text-gray-400 max-w-xl mx-auto font-medium">Search profile data with a cleaner, smoother, and more modern interface.</p>
         </div>
 
-        <div class="glass p-3 rounded-[2.5rem] mb-12 flex flex-col md:flex-row gap-3">
+        <div class="glass p-3 rounded-[2.5rem] mb-16 flex flex-col md:flex-row gap-3">
             <input id="targetUser" type="text" placeholder="Enter TikTok username..." 
-                class="flex-1 bg-white/5 border border-white/5 rounded-[2rem] px-8 py-5 focus:outline-none transition-all text-lg font-medium">
+                onkeydown="if(event.key === 'Enter') performSearch()"
+                class="flex-1 bg-white/5 border border-white/5 rounded-[2rem] px-8 py-5 focus:outline-none text-lg font-medium">
             <div class="flex gap-2">
-                <button onclick="pasteText()" class="px-6 py-5 rounded-[2rem] glass hover:bg-white/10 transition-all font-bold flex items-center gap-2">
+                <button onclick="pasteText()" class="px-6 py-5 rounded-[2rem] glass hover:bg-white/10 transition-all font-bold flex items-center gap-2 active:scale-95">
                     <i data-lucide="clipboard" class="w-5 h-5"></i> Paste
                 </button>
-                <button onclick="performSearch()" class="px-10 py-5 accent-bg text-black rounded-[2rem] font-extrabold hover:scale-105 transition-all shadow-xl active:scale-95">
+                <button onclick="performSearch()" class="px-10 py-5 accent-bg text-black font-extrabold rounded-[2rem] hover:scale-105 transition-all shadow-xl active:scale-95 search-pulse">
                     Fetch
                 </button>
             </div>
         </div>
 
-        <div id="resultsArea" class="hidden space-y-4 fade-in">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div id="resultsArea" class="results-container hidden space-y-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in-node delay-1">
                 <div class="glass premium-card p-6 rounded-[2rem] text-center">
                     <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Followers</p>
                     <p id="res-followers" class="text-2xl font-extrabold accent-text">--</p>
@@ -159,48 +191,38 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Region</p>
-                        <p id="res-region" class="text-xl font-bold">--</p>
-                    </div>
-                    <i data-lucide="globe" class="text-white/10 w-8 h-8"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 fade-in-node delay-2">
+                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between group">
+                    <div><p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Region</p><p id="res-region" class="text-xl font-bold">--</p></div>
+                    <i data-lucide="globe" class="text-white/10 w-8 h-8 group-hover:text-cyan-400/30 transition-colors"></i>
                 </div>
-                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Created Date</p>
-                        <p id="res-created" class="text-xl font-bold">--</p>
-                    </div>
-                    <i data-lucide="calendar" class="text-white/10 w-8 h-8"></i>
+                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between group">
+                    <div><p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Created Date</p><p id="res-created" class="text-xl font-bold">--</p></div>
+                    <i data-lucide="calendar" class="text-white/10 w-8 h-8 group-hover:text-cyan-400/30 transition-colors"></i>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Nickname Edited</p>
-                        <p id="res-nickedit" class="text-xl font-bold">--</p>
-                    </div>
-                    <i data-lucide="user-plus" class="text-white/10 w-8 h-8"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 fade-in-node delay-3">
+                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between group">
+                    <div><p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Nickname Edited</p><p id="res-nickedit" class="text-xl font-bold">--</p></div>
+                    <i data-lucide="user-round" class="text-white/10 w-8 h-8 group-hover:text-cyan-400/30 transition-colors"></i>
                 </div>
-                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Has Passkey</p>
-                        <p id="res-passkey" class="text-xl font-bold">--</p>
-                    </div>
-                    <i data-lucide="fingerprint" class="text-white/10 w-8 h-8"></i>
+                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between group">
+                    <div><p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Has Passkey</p><p id="res-passkey" class="text-xl font-bold">--</p></div>
+                    <i data-lucide="shield-check" class="text-white/10 w-8 h-8 group-hover:text-cyan-400/30 transition-colors"></i>
                 </div>
             </div>
 
-            <button class="w-full py-6 rounded-[2.5rem] accent-bg text-black font-black text-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-2xl mt-4">
-                Download Avatar
-            </button>
+            <div class="fade-in-node delay-4 pt-2">
+                <button class="w-full py-6 rounded-[2.5rem] accent-bg text-black font-black text-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-2xl">
+                    Download Avatar
+                </button>
+            </div>
         </div>
     </main>
 
-    <footer class="mt-20 text-center pb-12">
-        <div class="glass max-w-xs mx-auto p-8 rounded-[3rem]">
+    <footer class="mt-24 text-center pb-12">
+        <div class="glass max-w-xs mx-auto p-8 rounded-[3rem] premium-card">
             <p class="font-bold">Made by <span class="accent-text">@a3cj</span></p>
             <p class="text-[11px] text-gray-500 mt-1 uppercase tracking-tighter">Help? DM me on Discord</p>
             <p class="text-sm font-bold text-gray-300 mt-2">Discord: @a3cj</p>
@@ -210,14 +232,9 @@
     <script>
         lucide.createIcons();
 
-        // THEME LOGIC
         function updateTheme(themeName) {
-            // Remove existing theme classes
             document.body.className = "p-4 md:p-8";
-            if(themeName !== 'default') {
-                document.body.classList.add(themeName);
-            }
-            // Trigger icon refresh for accent color updates
+            if(themeName !== 'default') document.body.classList.add(themeName);
             lucide.createIcons();
         }
 
@@ -225,16 +242,20 @@
             try {
                 const text = await navigator.clipboard.readText();
                 document.getElementById('targetUser').value = text;
-            } catch (e) { alert("Clipboard permission denied"); }
+            } catch (e) { console.log("Paste failed"); }
         }
 
         function performSearch() {
             const user = document.getElementById('targetUser').value;
             if(!user) return;
             
-            document.getElementById('resultsArea').classList.remove('hidden');
+            const area = document.getElementById('resultsArea');
+            area.classList.remove('hidden');
+            area.classList.remove('active');
+            void area.offsetWidth; 
+            area.classList.add('active');
             
-            // Mock Data
+            // Mock Stats
             document.getElementById('res-followers').innerText = "162.4M";
             document.getElementById('res-following').innerText = "78";
             document.getElementById('res-likes').innerText = "2.5B";
