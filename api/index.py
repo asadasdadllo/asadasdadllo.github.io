@@ -104,14 +104,18 @@ def lookup():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    # This finds the directory where index.html lives (one level up from /api)
-    root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    
-    # If someone asks for favicon or other files specifically
-    if os.path.exists(os.path.join(root_path, path)) and path != "":
-        return send_from_directory(root_path, path)
-    
-    # Otherwise, default to index.html
-    return send_from_directory(root_path, 'index.html')
+    # If the user goes to /lookup, handle it
+    if path == 'lookup':
+        username = request.args.get('username')
+        if not username:
+            return jsonify({"error": "Username is required."}), 400
+        user_info = get_user_info(username)
+        if not user_info:
+            return jsonify({"error": "User not found."}), 404
+        user_info["has_passkey"] = check_passkey(username)
+        return jsonify(user_info)
+        
+    # Otherwise, send the index.html from the SAME folder
+    return send_from_directory(os.path.dirname(__file__), 'index.html')
 
 app = app
