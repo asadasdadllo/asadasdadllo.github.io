@@ -4,251 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>aleiba.lol | TikTok Elite Lookup</title>
-    
-    <meta name="title" content="Tiktok User Lookup">
-    <meta name="description" content="Easily search for TikTok users by username. Fast, accurate, and simple — find TikTok profiles instantly.">
-    
     <link rel="icon" type="image/webp" href="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp">
-    <meta property="og:image" content="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp">
-    <meta name="twitter:image" content="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --accent: #00fff2;
-            --accent-glow: rgba(0, 255, 242, 0.3);
-            --bg-top: rgba(0, 255, 242, 0.15);
-            --bg-bottom: rgba(59, 130, 246, 0.1);
-        }
-
+        :root { --accent: #00fff2; --accent-glow: rgba(0, 255, 242, 0.3); --bg-top: rgba(0, 255, 242, 0.15); --bg-bottom: rgba(59, 130, 246, 0.1); }
         .theme-violet { --accent: #a855f7; --accent-glow: rgba(168, 85, 247, 0.4); --bg-top: rgba(168, 85, 247, 0.2); --bg-bottom: rgba(192, 38, 211, 0.1); }
         .theme-emerald { --accent: #10b981; --accent-glow: rgba(16, 185, 129, 0.4); --bg-top: rgba(16, 185, 129, 0.2); --bg-bottom: rgba(6, 78, 59, 0.1); }
         .theme-rose { --accent: #fb7185; --accent-glow: rgba(251, 113, 133, 0.4); --bg-top: rgba(251, 113, 133, 0.2); --bg-bottom: rgba(159, 18, 57, 0.1); }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #020617;
-            color: #f8fafc;
-            min-height: 100vh;
-            transition: background 0.8s ease;
-        }
-
-        .mesh-gradient {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: radial-gradient(at 0% 0%, var(--bg-top) 0px, transparent 50%), radial-gradient(at 100% 100%, var(--bg-bottom) 0px, transparent 50%);
-            filter: blur(80px);
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .glass {
-            background: rgba(10, 15, 28, 0.7);
-            backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .premium-card { transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .premium-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--accent); box-shadow: 0 15px 40px -10px var(--accent-glow); }
-
-        .accent-text { color: var(--accent); transition: color 0.5s ease; }
-        .accent-bg { background-color: var(--accent); transition: background 0.5s ease; }
-
-        input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 25px var(--accent-glow); background: rgba(255, 255, 255, 0.08); }
-
-        /* Entrance Animation */
-        .results-container.active .fade-in-node { animation: fadeInUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: #f8fafc; min-height: 100vh; }
+        .mesh-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(at 0% 0%, var(--bg-top) 0px, transparent 50%), radial-gradient(at 100% 100%, var(--bg-bottom) 0px, transparent 50%); filter: blur(80px); }
+        .glass { background: rgba(10, 15, 28, 0.7); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .accent-text { color: var(--accent); }
+        .accent-bg { background-color: var(--accent); }
+        .results-container.active .fade-in-node { animation: fadeInUp 0.7s forwards; opacity: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .loading-spinner { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="p-4 md:p-8">
     <div class="mesh-gradient"></div>
-
     <nav class="max-w-6xl mx-auto mb-12 flex justify-between items-center glass p-4 rounded-3xl">
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 cursor-pointer active:scale-95 transition-transform" onclick="resetPage()">
             <div class="w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900">
-                <img src="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp" alt="Logo" class="w-full h-full object-cover">
+                <img src="https://image2url.com/r2/default/images/1774976910853-4da8c167-2a03-48c7-babb-db7f2ed8aa0e.webp" class="w-full h-full object-cover">
             </div>
             <div>
-                <h1 class="text-xl font-extrabold tracking-tight leading-none text-white">aleiba.<span class="accent-text">lol</span></h1>
+                <h1 class="text-xl font-extrabold text-white">aleiba.<span class="accent-text">lol</span></h1>
                 <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Premium Analytics</p>
             </div>
         </div>
-        <select id="themeSelector" onchange="updateTheme(this.value)" class="bg-slate-950 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none cursor-pointer">
-            <option value="default">Theme: Neon</option>
+        <select id="themeSelector" onchange="updateTheme(this.value)" class="bg-slate-950 border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none cursor-pointer">
+            <option value="default">Neon</option>
             <option value="theme-violet">Violet</option>
             <option value="theme-emerald">Emerald</option>
             <option value="theme-rose">Rose</option>
         </select>
     </nav>
-
     <main class="max-w-4xl mx-auto">
         <div class="text-center mb-12">
-            <h2 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">TikTok <span class="accent-text">User Lookup</span></h2>
-            <p class="text-gray-400 max-w-xl mx-auto font-medium">Search public TikTok profile data with a cleaner, smoother interface.</p>
+            <h2 onclick="resetPage()" class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tighter cursor-pointer">TikTok <span class="accent-text">Lookup</span></h2>
         </div>
-
         <div class="glass p-3 rounded-[2.5rem] mb-16 flex flex-col md:flex-row gap-3">
-            <input id="usernameInput" type="text" placeholder="Enter TikTok username..." 
-                onkeydown="if(event.key === 'Enter') fetchData()"
-                class="flex-1 bg-white/5 border border-white/5 rounded-[2rem] px-8 py-5 focus:outline-none text-lg font-medium">
-            <div class="flex gap-2">
-                <button onclick="pasteClipboard()" class="px-6 py-5 rounded-[2rem] glass hover:bg-white/10 transition-all font-bold flex items-center gap-2 active:scale-95">
-                    <i data-lucide="clipboard" class="w-5 h-5"></i> Paste
-                </button>
-                <button id="fetchBtn" onclick="fetchData()" class="px-10 py-5 accent-bg text-black font-extrabold rounded-[2rem] hover:scale-105 transition-all shadow-xl active:scale-95 flex items-center gap-2">
-                    <span id="btnText">Fetch</span>
-                    <div id="btnLoader" class="loading-spinner"></div>
-                </button>
-            </div>
+            <input id="usernameInput" type="text" placeholder="Username..." onkeydown="if(event.key === 'Enter') fetchData()" class="flex-1 bg-white/5 rounded-[2rem] px-8 py-5 outline-none text-lg">
+            <button id="fetchBtn" onclick="fetchData()" class="px-10 py-5 accent-bg text-black font-extrabold rounded-[2rem] transition-all flex items-center gap-2 active:scale-95">
+                <span id="btnText">Fetch</span>
+                <div id="btnLoader" class="loading-spinner"></div>
+            </button>
         </div>
-
         <div id="resultsArea" class="results-container hidden space-y-4">
-            
             <div class="glass p-8 rounded-[2.5rem] flex items-center gap-6 fade-in-node">
-                <img id="avatar" src="" class="w-24 h-24 rounded-full border-4 border-white/10 shadow-2xl object-cover">
+                <img id="avatar" src="" class="w-24 h-24 rounded-full border-4 border-white/10 object-cover">
                 <div>
-                    <h3 id="nickname" class="text-3xl font-extrabold tracking-tight">--</h3>
+                    <h3 id="nickname" class="text-3xl font-extrabold">--</h3>
                     <p class="accent-text font-semibold">@<span id="usernameDisplay">--</span></p>
                     <p id="bio" class="text-gray-400 text-sm mt-1">--</p>
                 </div>
             </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in-node" style="animation-delay: 0.1s">
-                <div class="glass premium-card p-6 rounded-[2rem] text-center">
-                    <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Followers</p>
-                    <p id="followers" class="text-2xl font-extrabold accent-text">--</p>
-                </div>
-                <div class="glass premium-card p-6 rounded-[2rem] text-center">
-                    <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Following</p>
-                    <p id="following" class="text-2xl font-extrabold text-white">--</p>
-                </div>
-                <div class="glass premium-card p-6 rounded-[2rem] text-center">
-                    <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Likes</p>
-                    <p id="likes" class="text-2xl font-extrabold text-white">--</p>
-                </div>
-                <div class="glass premium-card p-6 rounded-[2rem] text-center">
-                    <p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">User ID</p>
-                    <p id="user_id" class="text-sm font-mono text-gray-400 truncate">--</p>
-                </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in-node">
+                <div class="glass p-6 rounded-[2rem] text-center"><p class="text-[10px] text-gray-500 font-bold mb-1">Followers</p><p id="followers" class="text-2xl font-extrabold accent-text">--</p></div>
+                <div class="glass p-6 rounded-[2rem] text-center"><p class="text-[10px] text-gray-500 font-bold mb-1">Following</p><p id="following" class="text-2xl font-extrabold">--</p></div>
+                <div class="glass p-6 rounded-[2rem] text-center"><p class="text-[10px] text-gray-500 font-bold mb-1">Likes</p><p id="likes" class="text-2xl font-extrabold">--</p></div>
+                <div class="glass p-6 rounded-[2rem] text-center"><p class="text-[10px] text-gray-500 font-bold mb-1">Region</p><p id="region" class="text-sm font-bold">--</p></div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 fade-in-node" style="animation-delay: 0.2s">
-                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between group">
-                    <div><p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Region</p><p id="region" class="text-xl font-bold">--</p></div>
-                    <i data-lucide="globe" class="text-white/10 w-8 h-8 group-hover:accent-text transition-colors"></i>
-                </div>
-                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between group">
-                    <div><p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Created Date</p><p id="created" class="text-xl font-bold">--</p></div>
-                    <i data-lucide="calendar" class="text-white/10 w-8 h-8 group-hover:accent-text transition-colors"></i>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 fade-in-node" style="animation-delay: 0.3s">
-                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between group">
-                    <div><p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Nickname Edited</p><p id="nickname_edited" class="text-xl font-bold">--</p></div>
-                    <i data-lucide="user-round" class="text-white/10 w-8 h-8 group-hover:accent-text transition-colors"></i>
-                </div>
-                <div class="glass premium-card p-8 rounded-[2rem] flex items-center justify-between group">
-                    <div><p class="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Has Passkey</p><p id="passkey" class="text-xl font-bold">--</p></div>
-                    <i data-lucide="shield-check" class="text-white/10 w-8 h-8 group-hover:accent-text transition-colors"></i>
-                </div>
-            </div>
-
-            <div class="fade-in-node" style="animation-delay: 0.4s">
-                <a id="downloadBtn" href="#" download class="w-full py-6 rounded-[2.5rem] accent-bg text-black font-black text-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-2xl flex justify-center items-center gap-3">
-                    <i data-lucide="download"></i> Download Avatar
-                </a>
+            <div class="glass p-8 rounded-[2rem] flex justify-between fade-in-node">
+                <div><p class="text-[10px] text-gray-500 font-bold">Created</p><p id="created" class="text-xl font-bold">--</p></div>
+                <div><p class="text-[10px] text-gray-500 font-bold">Passkey</p><p id="passkey" class="text-xl font-bold">--</p></div>
             </div>
         </div>
     </main>
-
-    <footer class="mt-24 text-center pb-12">
-        <div class="glass max-w-xs mx-auto p-8 rounded-[3rem] premium-card">
-            <p class="font-bold">Made by <span class="accent-text">@a3cj</span></p>
-            <p class="text-[11px] text-gray-500 mt-1">Help? DM me on Discord: <span>@a3cj</span></p>
-        </div>
-    </footer>
-
     <script>
         lucide.createIcons();
-
-        function updateTheme(themeName) {
-            document.body.className = "p-4 md:p-8";
-            if(themeName !== 'default') document.body.classList.add(themeName);
-            lucide.createIcons();
-        }
-
-        async function pasteClipboard() {
-            try {
-                const text = await navigator.clipboard.readText();
-                document.getElementById("usernameInput").value = text;
-                fetchData();
-            } catch (err) { alert("Paste failed"); }
-        }
-
-        function countryNameFromCode(code) {
-            const regions = {
-                AD: "🇦🇩 Andorra", AE: "🇦🇪 UAE", AF: "🇦🇫 Afghanistan", AG: "🇦🇬 Antigua", AI: "🇦🇮 Anguilla", AL: "🇦🇱 Albania", AM: "🇦🇲 Armenia", AO: "🇦🇴 Angola", AQ: "🇦🇶 Antarctica", AR: "🇦🇷 Argentina", AS: "🇦🇸 Am. Samoa", AT: "🇦🇹 Austria", AU: "🇦🇺 Australia", AW: "🇦🇼 Aruba", AX: "🇦🇽 Åland", AZ: "🇦🇿 Azerbaijan", BA: "🇧🇦 Bosnia", BB: "🇧🇧 Barbados", BD: "🇧🇩 Bangladesh", BE: "🇧🇪 Belgium", BF: "🇧🇫 Burkina Faso", BG: "🇧🇬 Bulgaria", BH: "🇧🇭 Bahrain", BI: "🇧🇮 Burundi", BJ: "🇧🇯 Benin", BL: "🇧🇱 St. Barthélemy", BM: "🇧🇲 Bermuda", BN: "🇧🇳 Brunei", BO: "🇧🇴 Bolivia", BQ: "🇧🇶 Bonaire", BR: "🇧🇷 Brazil", BS: "🇧🇸 Bahamas", BT: "🇧🇹 Bhutan", BV: "🇧🇻 Bouvet Is.", BW: "🇧🇼 Botswana", BY: "🇧🇾 Belarus", BZ: "🇧🇿 Belize", CA: "🇨🇦 Canada", CC: "🇨🇨 Cocos Is.", CD: "🇨🇩 DR Congo", CF: "🇨🇫 Central Africa", CG: "🇨🇬 Congo", CH: "🇨🇭 Switzerland", CI: "🇨🇮 Côte d'Ivoire", CK: "🇨🇰 Cook Is.", CL: "🇨🇱 Chile", CM: "🇨🇲 Cameroon", CN: "🇨🇳 China", CO: "🇨🇴 Colombia", CR: "🇨🇷 Costa Rica", CU: "🇨🇺 Cuba", CV: "🇨🇻 Cabo Verde", CW: "🇨🇼 Curaçao", CX: "🇨🇽 Christmas Is.", CY: "🇨🇾 Cyprus", CZ: "🇨🇿 Czechia", DE: "🇩🇪 Germany", DJ: "🇩🇯 Djibouti", DK: "🇩🇰 Denmark", DM: "🇩🇲 Dominica", DO: "🇩🇴 Dominican Rep.", DZ: "🇩🇿 Algeria", EC: "🇪🇨 Ecuador", EE: "🇪🇪 Estonia", EG: "🇪🇬 Egypt", EH: "🇪🇭 W. Sahara", ER: "🇪🇷 Eritrea", ES: "🇪🇸 Spain", ET: "🇪🇹 Ethiopia", FI: "🇫🇮 Finland", FJ: "🇫🇯 Fiji", FK: "🇫🇰 Falkland Is.", FM: "🇫🇲 Micronesia", FO: "🇫🇴 Faroe Is.", FR: "🇫🇷 France", GA: "🇬🇦 Gabon", GB: "🇬🇧 United Kingdom", GD: "🇬🇩 Grenada", GE: "🇬🇪 Georgia", GF: "🇬🇫 French Guiana", GG: "🇬🇬 Guernsey", GH: "🇬🇭 Ghana", GI: "🇬🇮 Gibraltar", GL: "🇬🇱 Greenland", GM: "🇬🇲 Gambia", GN: "🇬🇳 Guinea", GP: "🇬🇵 Guadeloupe", GQ: "🇬🇶 Eq. Guinea", GR: "🇬🇷 Greece", GT: "🇬🇹 Guatemala", GU: "🇬🇺 Guam", GW: "🇬🇼 Guinea-Bissau", GY: "🇬🇾 Guyana", HK: "🇭🇰 Hong Kong", HN: "🇭🇳 Honduras", HR: "🇭🇷 Croatia", HT: "🇭🇹 Haiti", HU: "🇭🇺 Hungary", ID: "🇮🇩 Indonesia", IE: "🇮🇪 Ireland", IL: "🇮🇱 Israel", IM: "🇮🇲 Isle of Man", IN: "🇮🇳 India", IQ: "🇮🇶 Iraq", IR: "🇮🇷 Iran", IS: "🇮🇸 Iceland", IT: "🇮🇹 Italy", JE: "🇯🇪 Jersey", JM: "🇯🇲 Jamaica", JO: "🇯🇴 Jordan", JP: "🇯🇵 Japan", KE: "🇰🇪 Kenya", KG: "🇰🇬 Kyrgyzstan", KH: "🇰🇭 Cambodia", KI: "🇰🇮 Kiribati", KM: "🇰🇲 Comoros", KN: "🇰🇳 St. Kitts", KP: "🇰🇵 North Korea", KR: "🇰🇷 South Korea", KW: "🇰🇼 Kuwait", KY: "🇰🇾 Cayman Is.", KZ: "🇰🇿 Kazakhstan", LA: "🇱🇦 Laos", LB: "🇱🇧 Lebanon", LC: "🇱🇨 St. Lucia", LI: "🇱🇮 Liechtenstein", LK: "🇱🇰 Sri Lanka", LR: "🇱🇷 Liberia", LS: "🇱🇸 Lesotho", LT: "🇱🇹 Lithuania", LU: "🇱🇺 Luxembourg", LV: "🇱🇻 Latvia", LY: "🇱🇾 Libya", MA: "🇲🇦 Morocco", MC: "🇲🇨 Monaco", MD: "🇲🇩 Moldova", ME: "🇲🇪 Montenegro", MG: "🇲🇬 Madagascar", MH: "🇲🇭 Marshall Is.", MK: "🇲🇰 N. Macedonia", ML: "🇲🇱 Mali", MM: "🇲🇲 Myanmar", MN: "🇲🇳 Mongolia", MO: "🇲🇴 Macao", MP: "🇲🇵 N. Mariana Is.", MQ: "🇲🇶 Martinique", MR: "🇲🇷 Mauritania", MS: "🇲🇸 Montserrat", MT: "🇲🇹 Malta", MU: "🇲🇺 Mauritius", MV: "🇲🇻 Maldives", MW: "🇲🇼 Malawi", MX: "🇲🇽 Mexico", MY: "🇲🇾 Malaysia", MZ: "🇲🇿 Mozambique", NA: "🇳🇦 Namibia", NC: "🇳🇨 New Caledonia", NE: "🇳🇪 Niger", NF: "🇳🇫 Norfolk Is.", NG: "🇳🇬 Nigeria", NI: "🇳🇮 Nicaragua", NL: "🇳🇱 Netherlands", NO: "🇳🇴 Norway", NP: "🇳🇵 Nepal", NR: "🇳🇷 Nauru", NU: "🇳🇺 Niue", NZ: "🇳🇿 New Zealand", OM: "🇴🇲 Oman", PA: "🇵🇦 Panama", PE: "🇵🇪 Peru", PF: "🇵🇫 Fr. Polynesia", PG: "🇵🇬 Papua New Guinea", PH: "🇵🇭 Philippines", PK: "🇵🇰 Pakistan", PL: "🇵🇱 Poland", PR: "🇵🇷 Puerto Rico", PS: "🇵🇸 Palestine", PT: "🇵🇹 Portugal", PW: "🇵🇼 Palau", PY: "🇵🇾 Paraguay", QA: "🇶🇦 Qatar", RE: "🇷🇪 Réunion", RO: "🇷🇴 Romania", RS: "🇷🇸 Serbia", RU: "🇷🇺 Russia", RW: "🇷🇼 Rwanda", SA: "🇸🇦 Saudi Arabia", SB: "🇸🇧 Solomon Is.", SC: "🇸🇨 Seychelles", SD: "🇸🇩 Sudan", SE: "🇸🇪 Sweden", SG: "🇸🇬 Singapore", SI: "🇸🇮 Slovenia", SK: "🇸🇰 Slovakia", SL: "🇸🇱 Sierra Leone", SM: "🇸🇲 San Marino", SN: "🇸🇳 Senegal", SO: "🇸🇴 Somalia", SR: "🇸🇷 Suriname", SS: "🇸🇸 South Sudan", ST: "🇸🇹 Sao Tome", SV: "🇸🇻 El Salvador", SX: "🇸🇽 Sint Maarten", SY: "🇸🇾 Syria", SZ: "🇸🇿 Eswatini", TC: "🇹🇨 Turks & Caicos", TD: "🇹🇩 Chad", TG: "🇹🇬 Togo", TH: "🇹🇭 Thailand", TJ: "🇹🇯 Tajikistan", TL: "🇹🇱 Timor-Leste", TM: "🇹🇲 Turkmenistan", TN: "🇹🇳 Tunisia", TO: "🇹🇴 Tonga", TR: "🇹🇷 Turkey", TT: "🇹🇹 Trinidad", TV: "🇹🇻 Tuvalu", TW: "🇹🇼 Taiwan", TZ: "🇹🇿 Tanzania", UA: "🇺🇦 Ukraine", UG: "🇺🇬 Uganda", US: "🇺🇸 United States", UY: "🇺🇾 Uruguay", UZ: "🇺🇿 Uzbekistan", VA: "🇻🇦 Vatican City", VC: "🇻🇨 St. Vincent", VE: "🇻🇪 Venezuela", VG: "🇻🇬 Brit. Virgin Is.", VI: "🇻🇮 U.S. Virgin Is.", VN: "🇻🇳 Vietnam", VU: "🇻🇺 Vanuatu", WF: "🇼🇫 Wallis & Futuna", WS: "🇼🇸 Samoa", YE: "🇾🇪 Yemen", YT: "🇾🇹 Mayotte", ZA: "🇿🇦 South Africa", ZM: "🇿🇲 Zambia", ZW: "🇿🇼 Zimbabwe"
-            };
-            const clean = code?.trim().toUpperCase();
-            return regions[clean] || code || "Unknown";
-        }
-
+        function updateTheme(themeName) { document.body.className = "p-4 md:p-8"; if(themeName !== 'default') document.body.classList.add(themeName); }
+        function resetPage() { document.getElementById("resultsArea").classList.add("hidden"); document.getElementById("usernameInput").value = ""; window.scrollTo({top:0, behavior:'smooth'}); }
         async function fetchData() {
             const input = document.getElementById("usernameInput");
             const username = input.value.trim();
             if (!username) return;
-
             const btnText = document.getElementById("btnText");
             const btnLoader = document.getElementById("btnLoader");
             const area = document.getElementById("resultsArea");
-            
-            btnText.style.display = "none";
-            btnLoader.style.display = "block";
-
+            btnText.style.display = "none"; btnLoader.style.display = "block";
             try {
                 const res = await fetch(`/lookup?username=${encodeURIComponent(username)}`);
                 const data = await res.json();
-
-                if (data.error) {
-                    alert(data.error);
-                    return;
-                }
-
-                // Data Binding
-                document.getElementById("nickname").textContent = data.nickname || "Unknown";
-                document.getElementById("usernameDisplay").textContent = data.username || username;
-                document.getElementById("avatar").src = data.profile_pic || "";
-                document.getElementById("bio").textContent = data.bio || "No bio available.";
-                document.getElementById("followers").textContent = Number(data.followers || 0).toLocaleString();
-                document.getElementById("following").textContent = Number(data.following || 0).toLocaleString();
-                document.getElementById("likes").textContent = Number(data.likes || 0).toLocaleString();
-                document.getElementById("user_id").textContent = data.user_id || "---";
-                document.getElementById("region").textContent = countryNameFromCode(data.region);
-                document.getElementById("created").textContent = data.created || "Unknown";
-                document.getElementById("nickname_edited").textContent = data.nickname_edited || "Never";
+                if (data.error) { alert(data.error); return; }
+                document.getElementById("nickname").textContent = data.nickname;
+                document.getElementById("usernameDisplay").textContent = data.username;
+                document.getElementById("avatar").src = data.profile_pic;
+                document.getElementById("bio").textContent = data.bio;
+                document.getElementById("followers").textContent = Number(data.followers).toLocaleString();
+                document.getElementById("following").textContent = Number(data.following).toLocaleString();
+                document.getElementById("likes").textContent = Number(data.likes).toLocaleString();
+                document.getElementById("region").textContent = data.region;
+                document.getElementById("created").textContent = data.created;
                 document.getElementById("passkey").textContent = data.has_passkey ? "Yes ✅" : "No ❌";
-                document.getElementById("downloadBtn").href = data.profile_pic || "#";
-
-                // Animation Trigger
                 area.classList.remove("hidden");
-                area.classList.remove("active");
-                void area.offsetWidth; 
                 area.classList.add("active");
-
-            } catch (err) {
-                alert("Lookup failed. Check backend connection.");
-            } finally {
-                btnText.style.display = "block";
-                btnLoader.style.display = "none";
-            }
+            } catch (err) { alert("Lookup failed."); } finally { btnText.style.display = "block"; btnLoader.style.display = "none"; }
         }
     </script>
 </body>
